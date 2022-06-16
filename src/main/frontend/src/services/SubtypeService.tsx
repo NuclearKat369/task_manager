@@ -2,7 +2,7 @@ import axios from "axios";
 
 const SUBTYPE_API_BASE_URL = "http://localhost:8080/showSubtype";
 
-class StatusService {
+class SubtypeService {
 
     // Обращение к API для получения из БД всех статусов
     getSubtypes() {
@@ -15,5 +15,5 @@ class StatusService {
     }
 }
 
-export default new StatusService();
+export default new SubtypeService();
 

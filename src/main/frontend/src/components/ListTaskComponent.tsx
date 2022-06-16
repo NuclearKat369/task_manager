@@ -6,7 +6,6 @@ import { BsArrowDownUp } from 'react-icons/bs';
 function ListTaskComponent() {
     const [tasks, setTasks] = useState([]);
     const [order, setOrder] = useState("ASC");
-    const [searchTerm, setSearchTerm] = useState('');
 
     const navigate = useNavigate();
 
@@ -72,7 +71,7 @@ function ListTaskComponent() {
             <div className="input-group">
                 <button className='btn btn-primary col-md-3' onClick={() => editTask('-1')}>Новая задача</button>
                 <input type="search" className="form-control col-md-7 rounded" placeholder="Введите запрос"
-                    aria-label="Search" aria-describedby="search-addon"/>
+                    aria-label="Search" aria-describedby="search-addon" />
                 <button type="button" className="btn btn-outline-primary col-md-2">Поиск</button>
             </div>
 

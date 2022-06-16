@@ -9,18 +9,17 @@ function App() {
   return (
     <div>
       <Router>
-          <HeaderComponent />
-          <div className="container">
-            <Routes>
-              <Route path="/" element={<ListTaskComponent/>} ></Route>
-              <Route path="/tasks" element={<ListTaskComponent/>} ></Route>
-              <Route path="/add-task/:id" element={<CreateOrUpdateTaskComponent/>} ></Route>
-
-            </Routes>
-          </div>
-          <div className='fixed-bottom'>
+        <HeaderComponent />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<ListTaskComponent />} ></Route>
+            <Route path="/tasks" element={<ListTaskComponent />} ></Route>
+            <Route path="/add-task/:id" element={<CreateOrUpdateTaskComponent />} ></Route>
+          </Routes>
+        </div>
+        <div className='fixed-bottom'>
           <FooterComponent />
-          </div>
+        </div>
       </Router>
     </div>
   );

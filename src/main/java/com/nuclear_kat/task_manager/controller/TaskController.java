@@ -49,14 +49,11 @@ public class TaskController {
 
         taskService.deleteTask(taskId);
 
-        //todo add ExceptionHandling
         return "Task with ID = " + taskId + " was deleted from Database";
     }
 
     @GetMapping("/tasks/{taskId}")
     public TaskStatusSubtypeDTO getTask(@PathVariable int taskId) {
-
-        //todo add ExceptionHandling
 
         return taskService.getTaskByTaskIdWithStatusAndSubtype(taskId);
     }
@@ -67,6 +64,7 @@ public class TaskController {
         return taskService.getAllTasksWithStatusAndSubtype();
     }
 
+    //    Конвертация из DTO в объект класса Task
     private Task entityFromTaskStatusSubtypeDto(TaskStatusSubtypeDTO taskStatusSubtypeDTO){
         Task task = new Task();
         Status status = statusService.getStatus(taskStatusSubtypeDTO.getStatusId());
@@ -79,6 +77,7 @@ public class TaskController {
         return task;
     }
 
+    //    Конвертация из DTO в объект класса Task
     private Task entityFromTaskSubtypeDto(TaskSubtypeDto taskSubtypeDto){
         Task task = new Task();
         Subtype subtype = subtypeService.getSubtype(taskSubtypeDto.getSubtypeId());
