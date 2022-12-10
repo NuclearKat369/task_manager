@@ -1,7 +1,8 @@
 package com.nuclear_kat.task_manager.service;
 
 import com.nuclear_kat.task_manager.dao.TaskRepository;
-import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDTO;
+import com.nuclear_kat.task_manager.dto.TaskFullDto;
+import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDto;
 import com.nuclear_kat.task_manager.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -41,12 +42,25 @@ public class TaskServiceImplementation implements TaskService {
         taskRepository.deleteById(taskId);
     }
 
-    public List<TaskStatusSubtypeDTO> getAllTasksWithStatusAndSubtype() {
+    public List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtype() {
         return taskRepository.getAllTasksWithStatusAndSubtype();
     }
 
-    public TaskStatusSubtypeDTO getTaskByTaskIdWithStatusAndSubtype(int taskId) {
-        return taskRepository.getTaskByTaskIdWithStatusAndSubtype(taskId);
+    //    public TaskStatusSubtypeDto getTaskByTaskIdWithStatusAndSubtype(int taskId) {
+//        return taskRepository.getTaskByTaskIdWithStatusAndSubtype(taskId);
+//    }
+
+    public TaskFullDto getTaskFullInfo(int taskId) {
+        return taskRepository.getTaskFullInfo(taskId);
+    }
+
+    public List<TaskStatusSubtypeDto> getAllWithStatus(int statusId) {
+
+        return taskRepository.getAllWithStatusId(statusId);
+    }
+
+    public long countTasksAll(){
+     return taskRepository.countAllTasks();
     }
 
 }

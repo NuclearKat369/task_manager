@@ -5,6 +5,7 @@ public class TaskSubtypeDto {
     private String taskName;
     private String taskText;
     private int subtypeId;
+    private int taskId;
 
     public TaskSubtypeDto() {
     }
@@ -13,6 +14,7 @@ public class TaskSubtypeDto {
         this.taskName = taskName;
         this.taskText = taskText;
         this.subtypeId = subtypeId;
+        this.taskId = -1;
     }
 
     public String getTaskName() {
@@ -37,6 +39,14 @@ public class TaskSubtypeDto {
 
     public void setSubtypeId(int subtypeId) {
         this.subtypeId = subtypeId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     @Override

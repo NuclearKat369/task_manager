@@ -1,26 +1,17 @@
-import React, { Component } from 'react';
+function HeaderComponent() {
 
-class HeaderComponent extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
+    return (
+        <div>
+            <header className="App-header">
+                <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
+                    <div><a href="http://localhost:3000/tasks/all" className='navbar-brand'>Менеджер заявок</a></div>
+                    <div><a href="http://localhost:3000/info" className='nav-item navbar-brand'>Справка</a></div>
+                </nav>
+            </header>
+        </div>
+    );
 
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <header>
-                    <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
-                        <div><a href="http://localhost:3000" className='navbar-brand'>Менеджер заявок</a></div>
-
-                    </nav>
-                </header>
-            </div>
-        );
-    }
 }
 
 export default HeaderComponent;

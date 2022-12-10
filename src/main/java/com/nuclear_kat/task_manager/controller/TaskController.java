@@ -1,6 +1,7 @@
 package com.nuclear_kat.task_manager.controller;
 
-import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDTO;
+import com.nuclear_kat.task_manager.dto.TaskFullDto;
+import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDto;
 import com.nuclear_kat.task_manager.dto.TaskSubtypeDto;
 import com.nuclear_kat.task_manager.entity.Status;
 import com.nuclear_kat.task_manager.entity.Subtype;
@@ -28,18 +29,16 @@ public class TaskController {
     private SubtypeService subtypeService;
 
     @PostMapping("/tasks")
-    private Task addNewTask(@RequestBody TaskSubtypeDto taskSubtypeDto) {
+    private Task addTask(@RequestBody TaskSubtypeDto taskSubtypeDto) {
         Task task = entityFromTaskSubtypeDto(taskSubtypeDto);
-
         taskService.saveTask(task);
         return task;
     }
 
     @PutMapping("/tasks/{taskId}")
-    public Task updateTask(@PathVariable int taskId, @RequestBody TaskStatusSubtypeDTO taskStatusSubtypeDTOBody) {
-        Task task = entityFromTaskStatusSubtypeDto(taskStatusSubtypeDTOBody);
+    public Task updateTask(@PathVariable int taskId, @RequestBody TaskFullDto taskFullDtoBody) {
+        Task task = entityFromTaskFullDto(taskFullDtoBody);
         task.setTaskId(taskId);
-
         taskService.saveTask(task);
         return task;
     }
@@ -49,36 +48,53 @@ public class TaskController {
 
         taskService.deleteTask(taskId);
 
-        //todo add ExceptionHandling
         return "Task with ID = " + taskId + " was deleted from Database";
     }
 
+//    @GetMapping("/tasks/{taskId}")
+//    public TaskStatusSubtypeDto getTask(@PathVariable int taskId) {
+//
+//        return taskService.getTaskByTaskIdWithStatusAndSubtype(taskId);
+//    }
+
     @GetMapping("/tasks/{taskId}")
-    public TaskStatusSubtypeDTO getTask(@PathVariable int taskId) {
+    public TaskFullDto getTask(@PathVariable int taskId) {
+        return taskService.getTaskFullInfo(taskId);
+    }
 
-        //todo add ExceptionHandling
+    @GetMapping("/tasks/getStatus/{statusId}")
+    public List<TaskStatusSubtypeDto> getTaskWithStatus(@PathVariable int statusId){
 
-        return taskService.getTaskByTaskIdWithStatusAndSubtype(taskId);
+        return taskService.getAllWithStatus(statusId);
     }
 
     @GetMapping("/tasks")
-    public List<TaskStatusSubtypeDTO> showWithStatusesAndSubtypes(){
+    public List<TaskStatusSubtypeDto> showWithStatusesAndSubtypes(){
 
         return taskService.getAllTasksWithStatusAndSubtype();
     }
 
-    private Task entityFromTaskStatusSubtypeDto(TaskStatusSubtypeDTO taskStatusSubtypeDTO){
+
+    @GetMapping("tasks/getNumberOfAllTasks")
+    public long countTasksAll(){
+        System.out.println("countTasksAll = " + taskService.countTasksAll());
+        return taskService.countTasksAll();
+    }
+
+    //    Конвертация из DTO в объект класса Task
+    private Task entityFromTaskFullDto(TaskFullDto taskFullDto){
         Task task = new Task();
-        Status status = statusService.getStatus(taskStatusSubtypeDTO.getStatusId());
-        Subtype subtype = subtypeService.getSubtype(taskStatusSubtypeDTO.getSubtypeId());
-        task.setTaskName(taskStatusSubtypeDTO.getTaskName());
-        task.setTaskText(taskStatusSubtypeDTO.getTaskText());
+        Status status = statusService.getStatus(taskFullDto.getStatusId());
+        Subtype subtype = subtypeService.getSubtype(taskFullDto.getSubtypeId());
+        task.setTaskName(taskFullDto.getTaskName());
+        task.setTaskText(taskFullDto.getTaskText());
         status.addTaskStatus(task);
         subtype.addTaskSubtype(task);
 
         return task;
     }
 
+    //    Конвертация из DTO в объект класса Task
     private Task entityFromTaskSubtypeDto(TaskSubtypeDto taskSubtypeDto){
         Task task = new Task();
         Subtype subtype = subtypeService.getSubtype(taskSubtypeDto.getSubtypeId());

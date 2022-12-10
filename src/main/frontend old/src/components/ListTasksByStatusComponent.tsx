@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TaskService from '../services/TaskService';
 import { BsArrowDownUp } from 'react-icons/bs';
 
-function ListTaskComponent() {
+function ListTasksByStatusComponent()  {
     const [tasks, setTasks] = useState([]);
     const [order, setOrder] = useState("ASC");
-    const [searchTerm, setSearchTerm] = useState('');
+    const { statusId } = useParams();
 
     const navigate = useNavigate();
 
@@ -15,8 +15,22 @@ function ListTaskComponent() {
     }, [])
 
     async function handleClick() {
-        const result = await TaskService.getTasks();
-        setTasks(result.data);
+        const taskType = parseInt(statusId, 10);
+        switch (taskType) {
+            case 1: case 2: case 3: case 4: {
+                const result = await TaskService.getAllTasksWithStatusId(taskType);
+                setTasks(result.data);
+                console.log("taskType opened: ");
+                console.log(taskType);
+                break;
+            }
+            default: {
+                const result = await TaskService.getAllTasks();
+                setTasks(result.data);
+                console.log("taskType opened default: ");
+                console.log(taskType);
+            }
+        }
     }
 
     // Переход в окно редактирования или добавления заявки
@@ -31,6 +45,7 @@ function ListTaskComponent() {
         });
     }
 
+    // Сортировка заявок по ID
     const sortById = (col) => {
         if (order === "ASC") {
             const sorted = [...tasks].sort((a, b) =>
@@ -70,13 +85,12 @@ function ListTaskComponent() {
             <h1>Список задач</h1>
 
             <div className="input-group">
-                <button className='btn btn-primary col-md-3' onClick={() => editTask('-1')}>Новая задача</button>
                 <input type="search" className="form-control col-md-7 rounded" placeholder="Введите запрос"
-                    aria-label="Search" aria-describedby="search-addon"/>
+                    aria-label="Search" aria-describedby="search-addon" />
                 <button type="button" className="btn btn-outline-primary col-md-2">Поиск</button>
             </div>
 
-            <table className="table table-hover table-dark" align="center">
+            <table className="table table-hover table-light" align="center">
                 <thead>
                     <tr>
 
@@ -111,4 +125,4 @@ function ListTaskComponent() {
     );
 }
 
-export default ListTaskComponent;
+export default ListTasksByStatusComponent;
