@@ -1,7 +1,12 @@
 package com.nuclear_kat.task_manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -27,6 +32,11 @@ public class Task {
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime lastUpdated;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}
+            , mappedBy = "fileTask", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<FileData> taskFiles;
 
     public Task() {
     }
@@ -82,5 +92,18 @@ public class Task {
 
     public void setTaskSubtype(Subtype taskSubtype) {
         this.taskSubtype = taskSubtype;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", taskName='" + taskName + '\'' +
+                ", taskStatus=" + taskStatus +
+                ", taskText='" + taskText + '\'' +
+                ", taskSubtype=" + taskSubtype +
+                ", lastUpdated=" + lastUpdated +
+                ", taskFiles=" + taskFiles +
+                '}';
     }
 }

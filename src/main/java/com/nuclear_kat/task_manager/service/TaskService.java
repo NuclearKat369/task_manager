@@ -1,6 +1,7 @@
 package com.nuclear_kat.task_manager.service;
 
-import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDTO;
+import com.nuclear_kat.task_manager.dto.TaskFullDto;
+import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDto;
 import com.nuclear_kat.task_manager.entity.Task;
 
 import java.util.List;
@@ -15,8 +16,14 @@ public interface TaskService {
 
     public void deleteTask(int taskId);
 
-    public List<TaskStatusSubtypeDTO> getAllTasksWithStatusAndSubtype();
+    public List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtype();
 
-    public TaskStatusSubtypeDTO getTaskByTaskIdWithStatusAndSubtype(int taskId);
+//    public TaskStatusSubtypeDto getTaskByTaskIdWithStatusAndSubtype(int taskId);
+
+    public List<TaskStatusSubtypeDto> getAllWithStatus(int statusId);
+
+    public TaskFullDto getTaskFullInfo(int taskId);
+
+    public long countTasksAll();
 
 }

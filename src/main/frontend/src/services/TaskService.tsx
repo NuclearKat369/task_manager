@@ -5,7 +5,7 @@ const TASK_API_BASE_URL = "http://localhost:8080/tasks";
 class TaskService {
 
     // Обращение к API для получения из БД всех заявок
-    getTasks() {
+    getAllTasks() {
         return axios.get(TASK_API_BASE_URL);
     }
 
@@ -29,6 +29,13 @@ class TaskService {
         return axios.delete(TASK_API_BASE_URL + "/" + taskId)
     }
 
+    countAllTasks() {
+        return axios.get(TASK_API_BASE_URL + "/getNumberOfAllTasks")
+    }
+
+    getAllTasksWithStatusId(statusId) {
+        return axios.get(TASK_API_BASE_URL + "/getStatus/" + statusId)
+    }
 }
 
 export default new TaskService();

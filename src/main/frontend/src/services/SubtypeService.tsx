@@ -10,8 +10,8 @@ class SubtypeService {
     }
 
     // Обращение к API для получения из БД статуса с переданным ID
-    getSubtype(statusId) {
-        return axios.get(SUBTYPE_API_BASE_URL + "/getSubtype/" + statusId);
+    getSubtype(subtypeId) {
+        return axios.get(SUBTYPE_API_BASE_URL + "/getSubtype/" + subtypeId);
     }
 }
 

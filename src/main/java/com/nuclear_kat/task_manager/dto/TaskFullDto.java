@@ -1,6 +1,6 @@
 package com.nuclear_kat.task_manager.dto;
 
-public class TaskStatusSubtypeDTO {
+public class TaskFullDto {
 
     private int statusId;
     private String statusName;
@@ -10,12 +10,11 @@ public class TaskStatusSubtypeDTO {
     private String taskName;
     private String taskText;
 
-    public TaskStatusSubtypeDTO() {
+    public TaskFullDto() {
     }
 
-    public TaskStatusSubtypeDTO(int statusId, String statusName
-            , int subtypeId, String subtypeName
-            , int taskId, String taskName, String taskText) {
+    public TaskFullDto(int statusId, String statusName, int subtypeId, String subtypeName,
+                       int taskId, String taskName, String taskText) {
         this.statusId = statusId;
         this.statusName = statusName;
         this.subtypeId = subtypeId;
@@ -24,7 +23,6 @@ public class TaskStatusSubtypeDTO {
         this.taskName = taskName;
         this.taskText = taskText;
     }
-
 
     public int getStatusId() {
         return statusId;
@@ -40,6 +38,22 @@ public class TaskStatusSubtypeDTO {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public int getSubtypeId() {
+        return subtypeId;
+    }
+
+    public void setSubtypeId(int subtypeId) {
+        this.subtypeId = subtypeId;
+    }
+
+    public String getSubtypeName() {
+        return subtypeName;
+    }
+
+    public void setSubtypeName(String subtypeName) {
+        this.subtypeName = subtypeName;
     }
 
     public int getTaskId() {
@@ -66,25 +80,9 @@ public class TaskStatusSubtypeDTO {
         this.taskText = taskText;
     }
 
-    public int getSubtypeId() {
-        return subtypeId;
-    }
-
-    public void setSubtypeId(int subtypeId) {
-        this.subtypeId = subtypeId;
-    }
-
-    public String getSubtypeName() {
-        return subtypeName;
-    }
-
-    public void setSubtypeName(String subtypeName) {
-        this.subtypeName = subtypeName;
-    }
-
     @Override
     public String toString() {
-        return "TaskStatusSubtypeDTO{" +
+        return "TaskFullDto{" +
                 "statusId=" + statusId +
                 ", statusName='" + statusName + '\'' +
                 ", subtypeId=" + subtypeId +

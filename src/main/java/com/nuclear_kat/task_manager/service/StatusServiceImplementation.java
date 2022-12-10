@@ -1,6 +1,8 @@
 package com.nuclear_kat.task_manager.service;
 
+import com.nuclear_kat.task_manager.dao.StatusRepositoryCriteriaImpl;
 import com.nuclear_kat.task_manager.dao.StatusRepository;
+import com.nuclear_kat.task_manager.dto.TaskStatusCountDto;
 import com.nuclear_kat.task_manager.entity.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,6 +17,9 @@ public class StatusServiceImplementation implements StatusService{
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private StatusRepositoryCriteriaImpl statusRepositoryCriteriaImpl;
 
     @Override
     @Transactional
@@ -37,6 +42,12 @@ public class StatusServiceImplementation implements StatusService{
             status = optional.get();
         }
         return status;
+    }
+
+    @Override
+    @Transactional
+    public List<TaskStatusCountDto> countTasksByTaskStatus(){
+        return statusRepositoryCriteriaImpl.taskStatusCountDto();
     }
 
     @Override
