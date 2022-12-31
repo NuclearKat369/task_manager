@@ -1,20 +1,26 @@
 package com.nuclear_kat.task_manager.service;
 
+import com.nuclear_kat.task_manager.dto.TaskFileDto;
 import com.nuclear_kat.task_manager.entity.FileData;
 import com.nuclear_kat.task_manager.entity.Task;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface FileDataService {
 
-    public List<FileData> getAllFileData();
+    List<FileData> getAllFileData();
 
-    public void saveFileData(MultipartFile multipartFile, Task fileTask) throws IOException;
+    void saveFileData(MultipartFile multipartFile, Task fileTask) throws IOException;
 
-    public FileData getFileData(int fileDataId);
+    FileData getFileData(int fileDataId);
 
-    public void deleteFileData(int fileDataId);
+    void deleteFileData(int fileDataId);
 
+    List<TaskFileDto> getAllFileDataByTaskId(int taskId);
+
+    byte[] getFileBytes(int fileDataId);
 }

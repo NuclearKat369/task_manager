@@ -1,6 +1,7 @@
 package com.nuclear_kat.task_manager.service;
 
 import com.nuclear_kat.task_manager.dao.FileDataRepository;
+import com.nuclear_kat.task_manager.dto.TaskFileDto;
 import com.nuclear_kat.task_manager.entity.FileData;
 import com.nuclear_kat.task_manager.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FileDataServiceImplementation implements FileDataService{
+public class FileDataServiceImpl implements FileDataService {
 
     @Autowired
     private FileDataRepository fileDataRepository;
@@ -41,7 +43,23 @@ public class FileDataServiceImplementation implements FileDataService{
     }
 
     @Override
-    public void deleteFileData(int fileDataId) {
+    public byte[] getFileBytes(int fileDataId) {
+        FileData fileData = null;
+        Optional<FileData> optional = fileDataRepository.findById(fileDataId);
+        if (optional.isPresent()) {
+            fileData = optional.get();
+        }
+        return fileData.getFileData();
 
+    }
+
+    @Override
+    public void deleteFileData(int fileDataId) {
+        fileDataRepository.deleteById(fileDataId);
+    }
+
+    @Override
+    public List<TaskFileDto> getAllFileDataByTaskId(int taskId) {
+        return fileDataRepository.getFileDataByTaskId(taskId);
     }
 }

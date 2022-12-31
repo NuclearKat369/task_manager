@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TaskServiceImplementation implements TaskService {
+public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
@@ -23,8 +23,10 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public void saveTask(Task task) {
-        taskRepository.save(task);
+    public Task saveTask(Task task) {
+        Task savedTask = taskRepository.save(task);
+        System.out.println(savedTask.toString());
+        return savedTask;
     }
 
     @Override
@@ -45,10 +47,6 @@ public class TaskServiceImplementation implements TaskService {
     public List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtype() {
         return taskRepository.getAllTasksWithStatusAndSubtype();
     }
-
-    //    public TaskStatusSubtypeDto getTaskByTaskIdWithStatusAndSubtype(int taskId) {
-//        return taskRepository.getTaskByTaskIdWithStatusAndSubtype(taskId);
-//    }
 
     public TaskFullDto getTaskFullInfo(int taskId) {
         return taskRepository.getTaskFullInfo(taskId);

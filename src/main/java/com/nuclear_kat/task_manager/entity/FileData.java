@@ -16,12 +16,13 @@ public class FileData {
     @Column(name = "file_name")
     private String fileName;
 
-    @Lob
     @Column(name = "file_obj")
+    @Lob
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] fileData;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
+            , CascadeType.DETACH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", referencedColumnName = "task_id")
     private Task fileTask;
 

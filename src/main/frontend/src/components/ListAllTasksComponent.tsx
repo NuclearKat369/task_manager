@@ -28,9 +28,7 @@ function ListAllTasksComponent() {
 
     return (
         <div className="App">
-        
             {statusCheck()}
-
         </div>
     );
 }

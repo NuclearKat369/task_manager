@@ -1,41 +1,52 @@
 package com.nuclear_kat.task_manager.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Arrays;
 
 public class TaskFileDto {
 
-    private MultipartFile multipartFile;
-    private int taskId;
+    private byte[] fileData;
+    private String fileName;
+    private int fileId;
 
     public TaskFileDto() {
     }
 
-    public TaskFileDto(MultipartFile multipartFile, int taskId) {
-        this.multipartFile = multipartFile;
-        this.taskId = taskId;
+    public TaskFileDto(byte[] fileData, String fileName, int fileId) {
+        this.fileData = fileData;
+        this.fileName = fileName;
+        this.fileId = fileId;
     }
 
-    public MultipartFile getMultipartFile() {
-        return multipartFile;
+    public byte[] getFileData() {
+        return fileData;
     }
 
-    public void setMultipartFile(MultipartFile multipartFile) {
-        this.multipartFile = multipartFile;
+    public void setFileData(byte[] fileData) {
+        this.fileData = fileData;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     @Override
     public String toString() {
         return "TaskFileDto{" +
-                "multipartFile=" + multipartFile +
-                ", taskId=" + taskId +
+                "fileData=" + Arrays.toString(fileData) +
+                ", fileName='" + fileName + '\'' +
+                ", fileId=" + fileId +
                 '}';
     }
 }

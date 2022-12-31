@@ -1,15 +1,28 @@
 package com.nuclear_kat.task_manager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "tasks")
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,80 +43,21 @@ public class Task {
     @JoinColumn(name = "task_subtype", referencedColumnName = "subtype_id")
     private Subtype taskSubtype;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private OffsetDateTime lastUpdated;
+    @CreatedDate
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false, updatable = false)
+    private LocalDateTime created;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}
+    @LastModifiedDate
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private LocalDateTime lastUpdated;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE}
             , mappedBy = "fileTask", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<FileData> taskFiles;
 
-    public Task() {
-    }
-
     public Task(String taskName, String taskText) {
         this.taskName = taskName;
         this.taskText = taskText;
-    }
-
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public Status getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(Status taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public String getTaskText() {
-        return taskText;
-    }
-
-    public void setTaskText(String taskText) {
-        this.taskText = taskText;
-    }
-
-    public OffsetDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(OffsetDateTime last_updated) {
-        this.lastUpdated = last_updated;
-    }
-
-    public Subtype getTaskSubtype() {
-        return taskSubtype;
-    }
-
-    public void setTaskSubtype(Subtype taskSubtype) {
-        this.taskSubtype = taskSubtype;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "taskId=" + taskId +
-                ", taskName='" + taskName + '\'' +
-                ", taskStatus=" + taskStatus +
-                ", taskText='" + taskText + '\'' +
-                ", taskSubtype=" + taskSubtype +
-                ", lastUpdated=" + lastUpdated +
-                ", taskFiles=" + taskFiles +
-                '}';
     }
 }

@@ -1,5 +1,11 @@
 package com.nuclear_kat.task_manager.dto;
 
+import com.nuclear_kat.task_manager.entity.FileData;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.List;
+
 public class TaskFullDto {
 
     private int statusId;
@@ -9,12 +15,13 @@ public class TaskFullDto {
     private int taskId;
     private String taskName;
     private String taskText;
+    private LocalDateTime created;
 
     public TaskFullDto() {
     }
 
     public TaskFullDto(int statusId, String statusName, int subtypeId, String subtypeName,
-                       int taskId, String taskName, String taskText) {
+                       int taskId, String taskName, String taskText, LocalDateTime created) {
         this.statusId = statusId;
         this.statusName = statusName;
         this.subtypeId = subtypeId;
@@ -22,6 +29,7 @@ public class TaskFullDto {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskText = taskText;
+        this.created = created;
     }
 
     public int getStatusId() {
@@ -80,6 +88,14 @@ public class TaskFullDto {
         this.taskText = taskText;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
     @Override
     public String toString() {
         return "TaskFullDto{" +
@@ -90,6 +106,7 @@ public class TaskFullDto {
                 ", taskId=" + taskId +
                 ", taskName='" + taskName + '\'' +
                 ", taskText='" + taskText + '\'' +
+                ", created=" + created +
                 '}';
     }
 }

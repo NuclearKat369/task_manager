@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { StatusType } from '../features/enums';
 import { useAppSelector } from '../features/store';
+import { getTaskFiles } from '../features/taskFileSlice';
 import { getErrors, getStatus, getTask } from '../features/taskSlice';
 
 function TaskCardComponent() {

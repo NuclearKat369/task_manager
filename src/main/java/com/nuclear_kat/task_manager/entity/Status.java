@@ -1,13 +1,17 @@
 package com.nuclear_kat.task_manager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "status")
 public class Status {
@@ -26,9 +30,6 @@ public class Status {
     @JsonIgnore
     private List<Task> tasks;
 
-    public Status() {
-    }
-
     public Status(String statusName) {
         this.statusName = statusName;
     }
@@ -39,29 +40,5 @@ public class Status {
         }
         tasks.add(task);
         task.setTaskStatus(this);
-    }
-
-    public int getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }
-
-    public String getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
     }
 }

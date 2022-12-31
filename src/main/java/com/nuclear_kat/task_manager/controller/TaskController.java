@@ -6,12 +6,16 @@ import com.nuclear_kat.task_manager.dto.TaskSubtypeDto;
 import com.nuclear_kat.task_manager.entity.Status;
 import com.nuclear_kat.task_manager.entity.Subtype;
 import com.nuclear_kat.task_manager.entity.Task;
+import com.nuclear_kat.task_manager.service.FileDataService;
 import com.nuclear_kat.task_manager.service.StatusService;
 import com.nuclear_kat.task_manager.service.SubtypeService;
 import com.nuclear_kat.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,19 +32,27 @@ public class TaskController {
     @Autowired
     private SubtypeService subtypeService;
 
+    @Autowired
+    private FileDataService fileDataService;
+
     @PostMapping("/tasks")
     private Task addTask(@RequestBody TaskSubtypeDto taskSubtypeDto) {
         Task task = entityFromTaskSubtypeDto(taskSubtypeDto);
-        taskService.saveTask(task);
-        return task;
+        Task savedTask = taskService.saveTask(task);
+
+        System.out.println("taskID in addTask: " + savedTask.getTaskId());
+        System.out.println("taskID in addTask: " + savedTask.getCreated());
+
+        return savedTask;
     }
 
     @PutMapping("/tasks/{taskId}")
-    public Task updateTask(@PathVariable int taskId, @RequestBody TaskFullDto taskFullDtoBody) {
+    public Task updateTask(@PathVariable int taskId
+            , @RequestBody TaskFullDto taskFullDtoBody) {
         Task task = entityFromTaskFullDto(taskFullDtoBody);
         task.setTaskId(taskId);
-        taskService.saveTask(task);
-        return task;
+        Task savedTask = taskService.saveTask(task);
+        return savedTask;
     }
 
     @DeleteMapping("/tasks/{taskId}")
@@ -63,26 +75,26 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/getStatus/{statusId}")
-    public List<TaskStatusSubtypeDto> getTaskWithStatus(@PathVariable int statusId){
+    public List<TaskStatusSubtypeDto> getTaskWithStatus(@PathVariable int statusId) {
 
         return taskService.getAllWithStatus(statusId);
     }
 
     @GetMapping("/tasks")
-    public List<TaskStatusSubtypeDto> showWithStatusesAndSubtypes(){
+    public List<TaskStatusSubtypeDto> showWithStatusesAndSubtypes() {
 
         return taskService.getAllTasksWithStatusAndSubtype();
     }
 
 
     @GetMapping("tasks/getNumberOfAllTasks")
-    public long countTasksAll(){
+    public long countTasksAll() {
         System.out.println("countTasksAll = " + taskService.countTasksAll());
         return taskService.countTasksAll();
     }
 
     //    Конвертация из DTO в объект класса Task
-    private Task entityFromTaskFullDto(TaskFullDto taskFullDto){
+    private Task entityFromTaskFullDto(TaskFullDto taskFullDto) {
         Task task = new Task();
         Status status = statusService.getStatus(taskFullDto.getStatusId());
         Subtype subtype = subtypeService.getSubtype(taskFullDto.getSubtypeId());
@@ -95,7 +107,7 @@ public class TaskController {
     }
 
     //    Конвертация из DTO в объект класса Task
-    private Task entityFromTaskSubtypeDto(TaskSubtypeDto taskSubtypeDto){
+    private Task entityFromTaskSubtypeDto(TaskSubtypeDto taskSubtypeDto) {
         Task task = new Task();
         Subtype subtype = subtypeService.getSubtype(taskSubtypeDto.getSubtypeId());
         task.setTaskName(taskSubtypeDto.getTaskName());
