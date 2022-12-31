@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { BsArrowDownUp } from 'react-icons/bs';
+import { BsArrowDownUp, BsTrash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../features/store';
+import { fetchAllTaskFiles } from '../features/taskFileSlice';
 import { getAllTasks } from '../features/taskListSlice';
-import { fetchTaskByTaskId } from '../features/taskSlice';
+import { fetchTaskByTaskId, removeTask } from '../features/taskSlice';
 
 function ListedTasksComponent() {
 
@@ -23,21 +24,19 @@ function ListedTasksComponent() {
     let renderTasks;
     renderTasks = sorted.map((item) => {
         return (
-            <tbody>
-                <tr key={item.taskId} onClick={() => editTask(item.taskId)}>
-                    <th scope="row" className="text-end px-3">{item.taskId}</th>
-                    <td className="text-start px-2">{item.taskName}</td>
-                    <td className="text-start px-2">{item.statusName}</td>
-                    <td>
-                        {/* <button onClick={() => editTask(item.taskId)}
-                            className="btn btn-layout">Открыть</button> */}
-                        {/* <button style={{ marginLeft: "10px" }}
-                                    onClick={() => deleteTask(item.taskId)}
-                                    className="btn btn-danger">Удалить</button> */}
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
+            <tr key={item.taskId}
+                onClick={() => editTask(item.taskId)}
+            >
+                <th scope="row" className="text-end px-3">{item.taskId}</th>
+                <td className="text-start px-2">{item.taskName}</td>
+                <td className="text-start px-2">{item.statusName}</td>
+                <td>
+                    <button style={{ marginLeft: "10px" }}
+                        onClick={(e) => { e.stopPropagation(); deleteTask(item.taskId) }}
+                        className="btn btn-danger"><BsTrash /></button>
+                </td>
+                <td></td>
+            </tr>
         );
     });
 
@@ -45,17 +44,20 @@ function ListedTasksComponent() {
     const editTask = (taskId) => {
         if (taskId !== '-1') {
             console.log("dispatch from editTask in ListedTask");
-            dispatch(fetchTaskByTaskId(taskId));
+            dispatch(fetchTaskByTaskId(taskId))
+                .then(() => dispatch(fetchAllTaskFiles(taskId)))
+                .then(() => navigate(`/tasks/task/${taskId}`));
         }
-        navigate(`/tasks/task/${taskId}`);
     }
 
-    // // Удаление заявки
-    // const deleteTask = (taskId) => {
-    //     TaskService.deleteTask(taskId).then(res => {
-    //         setTasks(tasks.filter(item => item.taskId !== taskId));
-    //     });
-    // }
+    // Удаление заявки
+    const deleteTask = (taskId) => {
+        dispatch(removeTask(taskId))
+            .then(() => {
+                setSorted(sorted.filter(item => item.taskId !== taskId));
+            })
+            .then(() => navigate("/tasks/all"));
+    }
 
 
     // Сортировка заявок по ID
@@ -120,7 +122,9 @@ function ListedTasksComponent() {
                             }}>Ответственный<BsArrowDownUp /></th>
                     </tr>
                 </thead>
-                {renderTasks}
+                <tbody>
+                    {renderTasks}
+                </tbody>
             </table>
         </div>
     );

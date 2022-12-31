@@ -27,7 +27,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     // Выборка из БД одной строки "tasks" с присоединением имён "subtype" и "status"
     // с использованием соответствующего DTO по указаннуму ID
     @Query("SELECT new com.nuclear_kat.task_manager.dto.TaskFullDto(" +
-            "s.statusId, s.statusName, sub.subtypeId, sub.subtypeName, t.taskId, t.taskName, t.taskText) " +
+            "s.statusId, s.statusName, sub.subtypeId, sub.subtypeName, t.taskId, " +
+            "t.taskName, t.taskText, t.created) " +
             "FROM Task t JOIN t.taskStatus s JOIN t.taskSubtype sub WHERE t.taskId=:taskId")
     TaskFullDto getTaskFullInfo(int taskId);
 

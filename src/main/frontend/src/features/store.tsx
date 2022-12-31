@@ -4,6 +4,7 @@ import taskListReducer from "./taskListSlice";
 import taskStatusReducer from "./taskStatusSlice";
 import taskSubtypeReducer from "./taskSubtypeSlice";
 import taskCountReducer from "./taskCountSlice";
+import taskFileReducer from "./taskFileSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import {
     persistStore,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     taskSubtype: taskSubtypeReducer,
     task: taskReducer,
     taskCount: taskCountReducer,
+    taskFiles: taskFileReducer,
 });
 
 const persistConfig = {

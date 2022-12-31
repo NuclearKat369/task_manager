@@ -1,11 +1,17 @@
 package com.nuclear_kat.task_manager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "subtype")
 public class Subtype {
@@ -22,10 +28,6 @@ public class Subtype {
     @JsonIgnore
     private List<Task> tasks;
 
-
-    public Subtype() {
-    }
-
     public Subtype(String subtypeName){
         this.subtypeName = subtypeName;
     }
@@ -36,29 +38,5 @@ public class Subtype {
         }
         tasks.add(task);
         task.setTaskSubtype(this);
-    }
-
-    public int getSubtypeId() {
-        return subtypeId;
-    }
-
-    public void setSubtypeId(int subtypeId) {
-        this.subtypeId = subtypeId;
-    }
-
-    public String getSubtypeName() {
-        return subtypeName;
-    }
-
-    public void setSubtypeName(String subtypeName) {
-        this.subtypeName = subtypeName;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
     }
 }

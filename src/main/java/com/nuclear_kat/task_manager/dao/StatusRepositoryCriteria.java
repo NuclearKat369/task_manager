@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface StatusRepositoryCriteria {
 
-    public List<TaskStatusCountDto> taskStatusCountDto();
+    List<TaskStatusCountDto> taskStatusCountDto();
 
 }

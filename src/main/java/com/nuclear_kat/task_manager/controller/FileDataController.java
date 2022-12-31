@@ -10,10 +10,12 @@ import com.nuclear_kat.task_manager.entity.Task;
 import com.nuclear_kat.task_manager.service.FileDataService;
 import com.nuclear_kat.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -27,12 +29,18 @@ public class FileDataController {
     @Autowired
     private TaskService taskService;
 
-    @PostMapping("/uploadFile/{taskId}")
-    private MultipartFile uploadFileData(@PathVariable int taskId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+    @PostMapping("/uploadFile")
+    private String uploadFileData(@RequestParam("taskId") int taskId
+            , @RequestParam("files") MultipartFile[] multipartFiles) throws IOException {
         Task task = taskService.getTask(taskId);
-        fileDataService.saveFileData(multipartFile, task);
-        System.out.println(task);
-        return(multipartFile);
+        Arrays.stream(multipartFiles).forEach(multipartFile -> {
+            try {
+                fileDataService.saveFileData(multipartFile, task);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return ("files uploaded: " + multipartFiles.length);
     }
 
     @GetMapping("/{fileId}")
@@ -40,9 +48,27 @@ public class FileDataController {
         return fileDataService.getFileData(fileId);
     }
 
+    @GetMapping("/data/{fileId}")
+    public byte[] getFileData(@PathVariable int fileId) {
+        return fileDataService.getFileBytes(fileId);
+    }
+
+    @GetMapping("task/{taskId}")
+    public List<TaskFileDto> getFiles(@PathVariable int taskId) {
+        return fileDataService.getAllFileDataByTaskId(taskId);
+    }
+
     @GetMapping("/all")
-    public List<FileData> getAllFiles(){
+    public List<FileData> getAllFiles() {
         return fileDataService.getAllFileData();
+    }
+
+    @DeleteMapping("/{fileId}")
+    public String deleteFileData(@PathVariable int fileId) {
+
+        fileDataService.deleteFileData(fileId);
+
+        return "File with ID = " + fileId + " was deleted from Database";
     }
 
 }
