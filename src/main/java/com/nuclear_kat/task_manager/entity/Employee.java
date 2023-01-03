@@ -1,9 +1,8 @@
 package com.nuclear_kat.task_manager.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,13 +11,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
 @Entity
 @Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Employee {
+public class Employee implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id")
     private UUID uuid;
 
@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "employee_password")
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -46,13 +46,64 @@ public class Employee {
                     name = "role_role_id", referencedColumnName = "role_id"))
     private Collection<Role> roles;
 
-    public Employee(String lastName, String firstName, String patronymic
-            , String email, String password, Collection<Role> roles) {
+    @Column(name = "is_locked")
+    private Boolean locked = false;
+
+    @Column(name = "is_enabled")
+    private Boolean enabled = false;
+
+//    public Employee(String lastName, String firstName, String patronymic
+//            , String email, String password, Collection<Role> roles) {
+//        this.lastName = lastName;
+//        this.firstName = firstName;
+//        this.patronymic = patronymic;
+//        this.email = email;
+//        this.password = password;
+//        this.roles = roles;
+//    }
+
+
+    public Employee(String lastName
+            , String firstName
+            , String patronymic
+            , String email
+            , String password
+            , Collection<Role> roles) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
