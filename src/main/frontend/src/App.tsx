@@ -20,7 +20,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LayoutComponent />}>
+          {/* <Route path="/" element={<LayoutComponent />}>
             <Route path="tasks/*" element={<RequireAuth><ListAllTasksComponent /></RequireAuth>} >
               <Route path=":statusId/*" element={<RequireAuth><ListedTasksComponent /></RequireAuth>} />
               <Route path="task/*" element={<RequireAuth><TaskCardComponent /></RequireAuth>}>
@@ -32,6 +32,19 @@ function App() {
             <Route path="info/*" element={<RequireAuth><InfoComponent /></RequireAuth>}></Route>
             <Route path="contacts/*" element={<RequireAuth><ContactsComponent /></RequireAuth>}></Route>
             <Route path="not-found/*" element={<RequireAuth><NotFoundComponent /></RequireAuth>}></Route>
+          </Route> */}
+          <Route path="/" element={<LayoutComponent />}>
+            <Route path="tasks/*" element={<ListAllTasksComponent />} >
+              <Route path=":statusId/*" element={<ListedTasksComponent />} />
+              <Route path="task/*" element={<TaskCardComponent />}>
+                <Route path=":id/*" element={<CreateOrUpdateTaskComponent />} />
+              </Route>
+            </Route>
+            <Route path="login" element={<Register />}></Route>
+            <Route path="search/*" element={<SearchComponent searchKey={0} />}></Route>
+            <Route path="info/*" element={<InfoComponent />}></Route>
+            <Route path="contacts/*" element={<ContactsComponent />}></Route>
+            <Route path="not-found/*" element={<NotFoundComponent />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
