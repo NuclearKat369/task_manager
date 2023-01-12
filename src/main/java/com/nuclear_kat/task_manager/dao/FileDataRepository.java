@@ -12,8 +12,7 @@ import java.util.List;
 public interface FileDataRepository extends JpaRepository <FileData, Integer> {
 
     @Query("SELECT new com.nuclear_kat.task_manager.dto.TaskFileDto(" +
-            "fd.fileData, fd.fileName, fd.fileId) " +
+            " fd.fileName, fd.fileId) " +
             "FROM FileData fd JOIN fd.fileTask t WHERE t.taskId=:taskId ORDER BY fd.fileName DESC")
     List<TaskFileDto> getFileDataByTaskId(int taskId);
-
 }

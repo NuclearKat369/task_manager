@@ -1,20 +1,28 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAllTaskStatuses } from '../features/taskStatusSlice';
 import { useAppDispatch, useAppSelector } from '../features/store';
-import { getAllTaskSubtypes } from '../features/taskSubtypeSlice';
-import { addTask, appendTask, getTask } from '../features/taskSlice';
-import FileService from '../services/FileService';
+// import FileService from '../services/FileService';
 import FileUpload from './FileUpload';
-import { getTaskFiles, removeFileById } from '../features/taskFileSlice';
+import { getTaskFiles } from '../features/newSlices/taskFileSlice';
+import { getTask, setTask } from '../features/taskSlice';
+import { getAllTaskStatuses } from '../features/taskStatusSlice';
+import { getAllTaskSubtypes } from '../features/taskSubtypeSlice';
+import { selectCurrentToken } from '../features/auth/authSlice';
+import { useCreateTaskMutation } from '../features/taskListApiSlice';
 
 function CreateOrUpdateTaskComponent() {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const params = useParams();
-
     const task = useAppSelector(getTask);
+    const token = useAppSelector(selectCurrentToken);
     const taskFiles = useAppSelector(getTaskFiles);
+    const subtypes = useAppSelector(getAllTaskSubtypes);
+    const statuses = useAppSelector(getAllTaskStatuses);
+
+    console.log("currentTask TASK IN CreateOrUpdateTaskComponent", task)
+    console.log("CreateOrUpdateTaskComponent PARAMS", params)
 
     const [taskId, setTaskId] = useState("");
     const [taskName, setTaskName] = useState("");
@@ -24,24 +32,26 @@ function CreateOrUpdateTaskComponent() {
     const [taskSubtypeId, setTaskSubtypeId] = useState("");
     const [taskSubtypeName, setTaskSubtypeName] = useState("");
     const [taskCreatedAt, setTaskCreatedAt] = useState("");
-    const [selectedFiles, setSelectedFiles] = useState(null);
+
     const [files, setFiles] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState(null);
     const [removeFiles, setRemoveFiles] = useState([]);
 
-    const subtypes = useAppSelector(getAllTaskSubtypes);
-
-    const statuses = useAppSelector(getAllTaskStatuses);
-
-    const dispatch = useAppDispatch();
+    const [create, { isSuccess }] = useCreateTaskMutation();
 
     useEffect(() => {
+        console.log("useEffect[] CreateOrUpdateTaskComponent")
+        console.log(task)
         handleClick();
-    }, [taskId])
+    }, [params.id])
 
+
+    console.log("CreateOrUpdateTaskComponent FILES", files)
     // Подгрузка данных при переходе на страницу
     async function handleClick() {
+
         if (params.id !== '-1') {
-            task.map((item) => {
+            [task].map((item) => {
                 setTaskId(item.taskId);
                 setTaskName(item.taskName);
                 setTaskText(item.taskText);
@@ -52,7 +62,6 @@ function CreateOrUpdateTaskComponent() {
                 setTaskCreatedAt(item.created);
             })
             setFiles(taskFiles);
-            console.log("FILES IN CORU: ", files)
         }
         else {
             setTaskId("");
@@ -62,7 +71,7 @@ function CreateOrUpdateTaskComponent() {
             setTaskStatusName("");
             setTaskSubtypeId("");
             setTaskSubtypeName("");
-            setFiles(selectedFiles);
+            setFiles([]);
         }
     }
 
@@ -80,11 +89,9 @@ function CreateOrUpdateTaskComponent() {
     const changeStatusHandler = e => {
 
         const id = e.target.value;
-
         const found = statuses.find(item => { return item.statusId == id });
         setTaskStatusId(found.statusId);
         setTaskStatusName(found.statusName);
-
     }
 
     // Обработчик изменения статуса в выпадающем меню
@@ -92,16 +99,15 @@ function CreateOrUpdateTaskComponent() {
 
         const id = e.target.value;
         const found = subtypes.find(item => { return item.subtypeId == id });
-        console.log(found);
+        console.log("found: ", found);
         setTaskSubtypeId(found.subtypeId);
         setTaskSubtypeName(found.subtypeName);
-
     }
 
     // Сохранение новой или изменение имеющейся заявки
-    const updateTask = (e) => {
-        // e.preventDefault();
-        var Task = {
+    const updateTask = async (e) => {
+        e.preventDefault();
+        const newTask = {
             taskId: taskId,
             statusId: taskStatusId,
             statusName: taskStatusName,
@@ -113,28 +119,41 @@ function CreateOrUpdateTaskComponent() {
 
         // Если заявка новая (значение -1), то она добавляется в БД при сохранении
         if (params.id === "-1") {
-            dispatch(addTask(Task)).then(res => {
-                const newTask: any = res.payload;
-                const newTaskId = newTask.map(item => { return item.taskId });
-                handleFileUpload(newTaskId);
-                //newTaskId передавать для апдейта файлов, если есть
+            console.log("TASK: ", task)
+
+            try {
+                const response: any = await create(newTask).unwrap();
+
+                console.log("create(Task): ", response);
+                dispatch(setTask(response));
+                const newTaskId = response.taskId;
+                console.log("new task id", newTaskId);
+                // dispatch(addTask(Task)).then(res => {
+                //     const newTask: any = res.payload;
+                //     const newTaskId = newTask.map(item => { return item.taskId });
+                //     handleFileUpload(newTaskId);
+                //     //newTaskId передавать для апдейта файлов, если есть
+
+                // });
                 navigate("/tasks/all");
-            });
+            } catch (err: any) {
+                console.error(err);
+            }
         }
         // Если заявка пришла с ID, то будет изменена существующая заявка
         else {
-            dispatch(appendTask(Task))
-                .then(res => {
-                    handleFileUpload(Task.taskId);
-                    navigate("/tasks/all");
-                });
+            // dispatch(appendTask(Task))
+            //     .then(res => {
+            //         handleFileUpload(Task.taskId);
+            //         navigate("/tasks/all");
+            //     });
 
-            // Если есть файлы на удаление, то они будут удалены
-            if (removeFiles.length != 0) {
-                removeFiles.map(item => {
-                    dispatch(removeFileById(item));
-                })
-            }
+            // // Если есть файлы на удаление, то они будут удалены
+            // if (removeFiles.length != 0) {
+            //     removeFiles.map(item => {
+            //         dispatch(removeFileById(item));
+            //     })
+            // }
 
         }
     }
@@ -203,7 +222,7 @@ function CreateOrUpdateTaskComponent() {
                     <option value="" disabled>
                         Выберите тип заявки
                     </option>
-                    {subtypes.map(function fn(item) {
+                    {subtypes.map((item) => {
                         return (
                             <option value={item.subtypeId} key={item.subtypeId}>{item.subtypeName}</option>
                         );
@@ -221,7 +240,7 @@ function CreateOrUpdateTaskComponent() {
                     <option value={taskSubtypeId} disabled>
                         {taskSubtypeName}
                     </option>
-                    {subtypes.map(function fn(item) {
+                    {subtypes.map((item) => {
                         return (
                             <option value={item.subtypeId} key={item.subtypeId}>{item.subtypeName}</option>
                         );
@@ -232,17 +251,17 @@ function CreateOrUpdateTaskComponent() {
     }
 
     // Обработчик загрузки файлов 
-    const handleFileUpload = async (taskId: string) => {
-        if (selectedFiles && selectedFiles.length !== 0) {
-            const formData = new FormData();
-            for (let i = 0; i < selectedFiles.length; i++) {
-                formData.append("files", selectedFiles[i])
-            }
-            formData.append("taskId", taskId);
-            const res = await FileService.uploadFile(formData);
-            console.log("RESPONSE ON FILE", res);
-        }
-    }
+    // const handleFileUpload = async (taskId: string) => {
+    //     if (selectedFiles && selectedFiles.length !== 0) {
+    //         const formData = new FormData();
+    //         for (let i = 0; i < selectedFiles.length; i++) {
+    //             formData.append("files", selectedFiles[i])
+    //         }
+    //         formData.append("taskId", taskId);
+    //         const res = await FileService.uploadFile(formData);
+    //         console.log("RESPONSE ON FILE", res);
+    //     }
+    // }
 
     const handleSubmitButton = () => {
         const warning = "Заполнены не все поля!";
@@ -346,7 +365,8 @@ function CreateOrUpdateTaskComponent() {
                 </div> */}
                 <FileUpload
                     taskId={taskId}
-                    files={files} setFiles={setFiles}
+                    files={files}
+                    setFiles={setFiles}
                     selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}
                     removeFiles={removeFiles} setRemoveFiles={setRemoveFiles} />
 

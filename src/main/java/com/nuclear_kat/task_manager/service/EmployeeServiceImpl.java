@@ -1,42 +1,33 @@
 package com.nuclear_kat.task_manager.service;
 
+import com.nuclear_kat.task_manager.config.JwtService;
 import com.nuclear_kat.task_manager.dao.EmployeeRepository;
-import com.nuclear_kat.task_manager.dto.EmployeeRegistrationDto;
+import com.nuclear_kat.task_manager.dao.RoleRepository;
+import com.nuclear_kat.task_manager.dto.EmployeeDto;
 import com.nuclear_kat.task_manager.entity.Employee;
+import com.nuclear_kat.task_manager.auth.token.confirm.ConfirmationToken;
+import com.nuclear_kat.task_manager.auth.token.confirm.ConfirmationTokenService;
 import com.nuclear_kat.task_manager.entity.Role;
-import com.nuclear_kat.task_manager.registration.token.ConfirmationToken;
-import com.nuclear_kat.task_manager.registration.token.ConfirmationTokenService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 @Service
-@AllArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final static String USER_NOT_FOUND_MSG = "Пользователь с почтой %s не найден";
-    private final EmployeeRepository employeeRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
-
-//    @Override
-//    public Employee save(EmployeeRegistrationDto registrationDto) {
-//        Employee employee =
-//                new Employee(registrationDto.getLastName(), registrationDto.getFirstName()
-//                        ,registrationDto.getPatronymic(), registrationDto.getEmail()
-//                , registrationDto.getPassword(), Arrays.asList(new Role("Сотрудник")));
-//
-//        return employeeRepository.save(employee);
-//
-//    }
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -56,29 +47,41 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
             throw new IllegalStateException("Email already taken");
         }
 
-
-
-        String encodedPassword = bCryptPasswordEncoder.encode(employee.getPassword());
-
-        employee.setPassword(encodedPassword);
-
+        Collection<Role> roles = roleRepository.findRoleByName("Сотрудник");
+        employee.setRoles(roles);
         employeeRepository.save(employee);
 
-        String token = UUID.randomUUID().toString();
+        String jwt = jwtService.generateToken(employee);
+
         ConfirmationToken confirmationToken = new ConfirmationToken(
-                token
+                jwt
                 , LocalDateTime.now()
                 , LocalDateTime.now().plusMinutes(15)
                 , employee
         );
-
         confirmationTokenService.saveConfirmationToken(confirmationToken);
-        //TODO: send email
 
-        return token;
+        return jwt;
     }
 
     public int enableEmployee(String email) {
         return employeeRepository.enableEmployee(email);
+    }
+
+    @Override
+    public List<EmployeeDto> getAllEmployeesWithRoles() {
+        List<Employee> allEmployees = employeeRepository.findAll();
+        List<EmployeeDto> allEmployeesDto = new ArrayList<>();
+        for (int i = 0; i < allEmployees.size(); i++) {
+            allEmployeesDto.add(new EmployeeDto(
+                    allEmployees.get(i).getUuid(),
+                    allEmployees.get(i).getLastName(),
+                    allEmployees.get(i).getFirstName(),
+                    allEmployees.get(i).getPatronymic(),
+                    allEmployees.get(i).getEmail(),
+                    allEmployees.get(i).getRoles()
+            ));
+        }
+        return allEmployeesDto;
     }
 }

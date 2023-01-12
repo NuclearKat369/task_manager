@@ -1,15 +1,22 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../features/store';
-import { fetchFileById, getTaskFiles } from '../features/taskFileSlice';
 import { BsTrash } from 'react-icons/bs';
 import { isVisible } from '@testing-library/user-event/dist/utils';
+import { getTaskFiles } from '../features/newSlices/taskFileSlice';
+import { selectCurrentToken } from '../features/auth/authSlice';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+
+const FILEDATA_API_BASE_URL = "http://localhost:8080/files";
 
 const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, removeFiles, setRemoveFiles }) => {
 
-    const filePicker = useRef(null);
-    const [showElement, setShowElement] = useState(false)
+    const axiosPrivate = useAxiosPrivate();
 
-    const dispatch = useAppDispatch();
+    useEffect(() => {
+        console.log("USE EFFECT FileUpload")
+    })
+
+    const filePicker = useRef(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files;
@@ -22,6 +29,7 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
         }
     }
 
+    // Вызов системного окна выбора файла
     const handleFilePick = () => {
         filePicker.current.click();
     }
@@ -29,8 +37,9 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
     // Скачивание файла
     const downloadFile = (fileId, fileName) => {
         console.log("key: ", fileId)
-        dispatch(fetchFileById(fileId)).then(res => {
-            const url = window.URL.createObjectURL(new Blob([res.payload]));
+        axiosPrivate.get(FILEDATA_API_BASE_URL + "/data/" + fileId, { responseType: "blob" }).then((res) => {
+            console.log(res)
+            const url = window.URL.createObjectURL(new Blob([res.data]));
             let anchor = document.createElement("a");
             anchor.href = url;
             anchor.download = fileName;
@@ -59,6 +68,7 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
         setRemoveFiles(removeFiles.filter(item => item !== fileId));
     }
 
+    // Рендер выбранных для загрузки файлов
     let renderSelectedFiles = selectedFiles ?
         (Array.from(selectedFiles).map((file: any) => {
             return (
@@ -75,9 +85,13 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
                     </td>
                 </tr>
             )
-        })) : (<tr>Нет вложений</tr>);
+        })) : (
+            <tr>Нет вложений</tr>
+        );
 
-    let renderFiles = (files !== null && files.length !== 0) ?
+
+    // Рендер уже имеющихся файлов, если они есть
+    let renderFiles = (files !== undefined && files !== null && files.length !== 0) ?
         (files.map((item) => {
             return (
                 <tr key={item.fileId}
@@ -96,7 +110,9 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
                 </tr>
             )
         }))
-        : (<tr>Нет вложений</tr>)
+        : (
+            <tr>Нет вложений</tr>
+        )
 
     return (
         <>

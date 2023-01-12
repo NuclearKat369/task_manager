@@ -1,16 +1,11 @@
 package com.nuclear_kat.task_manager.controller;
 
 import com.nuclear_kat.task_manager.dto.TaskFileDto;
-import com.nuclear_kat.task_manager.dto.TaskFullDto;
-import com.nuclear_kat.task_manager.dto.TaskSubtypeDto;
 import com.nuclear_kat.task_manager.entity.FileData;
-import com.nuclear_kat.task_manager.entity.Status;
-import com.nuclear_kat.task_manager.entity.Subtype;
 import com.nuclear_kat.task_manager.entity.Task;
 import com.nuclear_kat.task_manager.service.FileDataService;
 import com.nuclear_kat.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,8 +25,9 @@ public class FileDataController {
     private TaskService taskService;
 
     @PostMapping("/uploadFile")
-    private String uploadFileData(@RequestParam("taskId") int taskId
-            , @RequestParam("files") MultipartFile[] multipartFiles) throws IOException {
+    private String uploadFileData(
+            @RequestParam("taskId") int taskId,
+            @RequestParam("files") MultipartFile[] multipartFiles) throws IOException {
         Task task = taskService.getTask(taskId);
         Arrays.stream(multipartFiles).forEach(multipartFile -> {
             try {
@@ -53,7 +49,7 @@ public class FileDataController {
         return fileDataService.getFileBytes(fileId);
     }
 
-    @GetMapping("task/{taskId}")
+    @GetMapping("/task/{taskId}")
     public List<TaskFileDto> getFiles(@PathVariable int taskId) {
         return fileDataService.getAllFileDataByTaskId(taskId);
     }

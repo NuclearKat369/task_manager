@@ -6,7 +6,7 @@ export enum StatusType {
 }
 
 export enum TaskStatusType{
-    ALL = "all",
+    ALL = "0",
     NEW = "1",
     IN_PROGRESS = "2",
     DONE = "3",

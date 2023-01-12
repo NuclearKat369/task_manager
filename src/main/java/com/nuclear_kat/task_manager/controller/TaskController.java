@@ -6,21 +6,17 @@ import com.nuclear_kat.task_manager.dto.TaskSubtypeDto;
 import com.nuclear_kat.task_manager.entity.Status;
 import com.nuclear_kat.task_manager.entity.Subtype;
 import com.nuclear_kat.task_manager.entity.Task;
-import com.nuclear_kat.task_manager.service.FileDataService;
 import com.nuclear_kat.task_manager.service.StatusService;
 import com.nuclear_kat.task_manager.service.SubtypeService;
 import com.nuclear_kat.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/")
+@RequestMapping("/tasks")
 public class TaskController {
 
     @Autowired
@@ -32,21 +28,18 @@ public class TaskController {
     @Autowired
     private SubtypeService subtypeService;
 
-    @Autowired
-    private FileDataService fileDataService;
-
-    @PostMapping("/tasks")
+    @PostMapping
     private Task addTask(@RequestBody TaskSubtypeDto taskSubtypeDto) {
         Task task = entityFromTaskSubtypeDto(taskSubtypeDto);
         Task savedTask = taskService.saveTask(task);
 
         System.out.println("taskID in addTask: " + savedTask.getTaskId());
-        System.out.println("taskID in addTask: " + savedTask.getCreated());
+        System.out.println("taskID in addTask: " + savedTask.getCreatedAt());
 
         return savedTask;
     }
 
-    @PutMapping("/tasks/{taskId}")
+    @PutMapping("/{taskId}")
     public Task updateTask(@PathVariable int taskId
             , @RequestBody TaskFullDto taskFullDtoBody) {
         Task task = entityFromTaskFullDto(taskFullDtoBody);
@@ -55,7 +48,7 @@ public class TaskController {
         return savedTask;
     }
 
-    @DeleteMapping("/tasks/{taskId}")
+    @DeleteMapping("/{taskId}")
     public String deleteTask(@PathVariable int taskId) {
 
         taskService.deleteTask(taskId);
@@ -63,31 +56,31 @@ public class TaskController {
         return "Task with ID = " + taskId + " was deleted from Database";
     }
 
-//    @GetMapping("/tasks/{taskId}")
-//    public TaskStatusSubtypeDto getTask(@PathVariable int taskId) {
-//
-//        return taskService.getTaskByTaskIdWithStatusAndSubtype(taskId);
-//    }
-
-    @GetMapping("/tasks/{taskId}")
+    @GetMapping("/{taskId}")
     public TaskFullDto getTask(@PathVariable int taskId) {
-        return taskService.getTaskFullInfo(taskId);
+        if (taskId != -1) {
+            return taskService.getTaskFullInfo(taskId);
+        } else {
+            return new TaskFullDto();
+        }
     }
 
-    @GetMapping("/tasks/getStatus/{statusId}")
+    @GetMapping("/getStatus/{statusId}")
     public List<TaskStatusSubtypeDto> getTaskWithStatus(@PathVariable int statusId) {
-
-        return taskService.getAllWithStatus(statusId);
+        if (statusId == 0) {
+            return taskService.getAllTasksWithStatusAndSubtype();
+        } else {
+            return taskService.getAllWithStatus(statusId);
+        }
     }
 
-    @GetMapping("/tasks")
+    @GetMapping
     public List<TaskStatusSubtypeDto> showWithStatusesAndSubtypes() {
 
         return taskService.getAllTasksWithStatusAndSubtype();
     }
 
-
-    @GetMapping("tasks/getNumberOfAllTasks")
+    @GetMapping("/getNumberOfAllTasks")
     public long countTasksAll() {
         System.out.println("countTasksAll = " + taskService.countTasksAll());
         return taskService.countTasksAll();
