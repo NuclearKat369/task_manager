@@ -1,24 +1,26 @@
 package com.nuclear_kat.task_manager.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 @Entity
 @Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Employee {
+public class Employee implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id")
     private UUID uuid;
 
@@ -34,25 +36,71 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "employee_password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_role",
             joinColumns = @JoinColumn(
                     name = "employee_employee_id", referencedColumnName = "employee_id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_role_id", referencedColumnName = "role_id"))
+                    name = "role_role_id", referencedColumnName = "role_id", updatable = false))
     private Collection<Role> roles;
 
-    public Employee(String lastName, String firstName, String patronymic
-            , String email, String password, Collection<Role> roles) {
+
+    @Column(name = "is_locked")
+    @JsonIgnore
+    private boolean locked = false;
+
+    @Column(name = "is_enabled")
+    @JsonIgnore
+    private boolean enabled = false;
+
+    public Employee(String lastName, String firstName,
+                    String patronymic, String email,
+                    String password) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(getRoles().toString()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
 }

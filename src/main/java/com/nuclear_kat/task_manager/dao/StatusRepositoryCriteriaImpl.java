@@ -16,9 +16,8 @@ public class StatusRepositoryCriteriaImpl implements StatusRepositoryCriteria {
     @PersistenceContext
     EntityManager em;
 
-
-    //Подсчёт количества заявок с определённым статусом
-    /*  select status.status_id, status_name, count (tasks.task_status) as status_count
+    /*  Подсчёт количества заявок с определённым статусом
+    select status.status_id, status_name, count (tasks.task_status) as status_count
     from status left join tasks on tasks.task_status=status.status_id
     group by status.status_id */
     @Override
