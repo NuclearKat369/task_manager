@@ -1,13 +1,7 @@
 package com.nuclear_kat.task_manager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
@@ -45,14 +38,17 @@ public class Task {
 
     @CreatedDate
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false, updatable = false)
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalDateTime lastUpdated;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE}
-            , mappedBy = "fileTask", fetch = FetchType.LAZY)
+    @OneToMany(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+                    CascadeType.DETACH, CascadeType.REMOVE},
+            mappedBy = "fileTask", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<FileData> taskFiles;
 
@@ -60,4 +56,15 @@ public class Task {
         this.taskName = taskName;
         this.taskText = taskText;
     }
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_creator", referencedColumnName = "employee_id")
+    private Employee createdBy;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_employee_in_charge", referencedColumnName = "employee_id")
+    private Employee employeeInCharge;
+
 }

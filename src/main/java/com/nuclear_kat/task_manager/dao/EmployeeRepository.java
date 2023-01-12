@@ -15,6 +15,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     Optional <Employee> findEmployeeByEmail(String email);
 
+    Optional<Employee> findEmployeeByUuid(UUID uuid);
+
     @Transactional
     @Modifying
     @Query("UPDATE Employee e " +

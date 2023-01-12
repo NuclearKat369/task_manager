@@ -1,18 +1,20 @@
 package com.nuclear_kat.task_manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
 @Entity
 @Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Employee implements UserDetails {
@@ -37,49 +39,43 @@ public class Employee implements UserDetails {
     @Column(name = "employee_password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_role",
             joinColumns = @JoinColumn(
                     name = "employee_employee_id", referencedColumnName = "employee_id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_role_id", referencedColumnName = "role_id"))
+                    name = "role_role_id", referencedColumnName = "role_id", updatable = false))
     private Collection<Role> roles;
 
+
     @Column(name = "is_locked")
-    private Boolean locked = false;
+    @JsonIgnore
+    private boolean locked = false;
 
     @Column(name = "is_enabled")
-    private Boolean enabled = false;
+    @JsonIgnore
+    private boolean enabled = false;
 
-//    public Employee(String lastName, String firstName, String patronymic
-//            , String email, String password, Collection<Role> roles) {
-//        this.lastName = lastName;
-//        this.firstName = firstName;
-//        this.patronymic = patronymic;
-//        this.email = email;
-//        this.password = password;
-//        this.roles = roles;
-//    }
-
-
-    public Employee(String lastName
-            , String firstName
-            , String patronymic
-            , String email
-            , String password
-            , Collection<Role> roles) {
+    public Employee(String lastName, String firstName,
+                    String patronymic, String email,
+                    String password) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(getRoles().toString()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
@@ -106,4 +102,5 @@ public class Employee implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
 }

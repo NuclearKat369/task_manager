@@ -1,10 +1,10 @@
 package com.nuclear_kat.task_manager.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -20,8 +20,17 @@ public class Role {
 
     @Column(name = "role_name")
     private String name;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY, mappedBy = "roles")
+    @JsonIgnore
+    private Collection<Employee> employees;
 
     public Role(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "" + id;
     }
 }

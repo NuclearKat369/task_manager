@@ -1,31 +1,37 @@
-import { useEffect, useState } from 'react'
-import { BsArrowDownUp, BsTrash } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../features/store';
-import { fetchAllTaskFiles } from '../features/taskFileSlice';
-import { getAllTasks } from '../features/taskListSlice';
-import { fetchTaskByTaskId, removeTask } from '../features/taskSlice';
+import { useEffect } from 'react'
+import { BsTrash } from 'react-icons/bs';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppSelector } from '../features/store';
+import { getAllTasks } from '../features/taskListNewSlice';
 
-function ListedTasksComponent() {
+function ListedTasksComponent({ sorted, setSorted, order, setOrder, sortBy, sortRequest, setSortRequest }) {
 
-    const tasks = useAppSelector(getAllTasks);
+    const allTasks = useAppSelector(getAllTasks);
 
-    const [order, setOrder] = useState("ASC");
-    const [allTasks, setAllTasks] = useState(tasks)
-    const [sorted, setSorted] = useState(allTasks);
+    console.log("ALL TASKS IN ListedTasksComponent", allTasks)
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const params = useParams();
 
     useEffect(() => {
+        console.log("sortRequest: ", sortRequest)
+        if (sortRequest == true)
+            if (sortBy === "taskId") {
+                sortById(sortBy);
+            }
+            else {
+                sortData(sortBy);
+            }
+    }, [sortRequest]);
 
-    }, []);
 
     let renderTasks;
     renderTasks = sorted.map((item) => {
         return (
             <tr key={item.taskId}
-                onClick={() => editTask(item.taskId)}
+                onClick={() => {
+                    editTask(item.taskId)
+                }}
             >
                 <th scope="row" className="text-end px-3">{item.taskId}</th>
                 <td className="text-start px-2">{item.taskName}</td>
@@ -43,20 +49,17 @@ function ListedTasksComponent() {
     // Переход в окно редактирования или добавления заявки
     const editTask = (taskId) => {
         if (taskId !== '-1') {
-            console.log("dispatch from editTask in ListedTask");
-            dispatch(fetchTaskByTaskId(taskId))
-                .then(() => dispatch(fetchAllTaskFiles(taskId)))
-                .then(() => navigate(`/tasks/task/${taskId}`));
+            navigate(`/task/${taskId}`);
         }
     }
 
     // Удаление заявки
     const deleteTask = (taskId) => {
-        dispatch(removeTask(taskId))
-            .then(() => {
-                setSorted(sorted.filter(item => item.taskId !== taskId));
-            })
-            .then(() => navigate("/tasks/all"));
+        // dispatch(removeTask(taskId))
+        //     .then(() => {
+        //         setSorted(sorted.filter(item => item.taskId !== taskId));
+        //     })
+        //     .then(() => navigate("/tasks/all"));
     }
 
 
@@ -74,6 +77,8 @@ function ListedTasksComponent() {
             ));
             setOrder("ASC");
         }
+        console.log("in sortById")
+        setSortRequest(false);
     }
 
     // Сортировка колонок по алфавиту
@@ -90,43 +95,14 @@ function ListedTasksComponent() {
             ));
             setOrder("ASC");
         }
+        console.log("in sortData")
+        setSortRequest(false);
     }
 
     return (
-        <div>
-            <h1>Список задач</h1>
-
-            <table className="table table-hover table-light" align="center">
-                <thead>
-                    <tr>
-                        <th className="th-sm"
-                            scope="col"
-                            onClick={() => {
-                                sortById("taskId")
-                            }}>Номер <BsArrowDownUp /></th>
-                        <th className="th-sm" scope="col"
-                            onClick={() => {
-                                sortData("taskName")
-                            }}>Тема <BsArrowDownUp /></th>
-                        <th className="th-sm" scope="col"
-                            onClick={() => {
-                                sortData("statusName")
-                            }}>Статус <BsArrowDownUp /></th>
-                        <th className="th-sm" scope="col"
-                            onClick={() => {
-                                sortData("statusName")
-                            }}>Дата создания<BsArrowDownUp /></th>
-                        <th className="th-sm" scope="col"
-                            onClick={() => {
-                                sortData("statusName")
-                            }}>Ответственный<BsArrowDownUp /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderTasks}
-                </tbody>
-            </table>
-        </div>
+        <>
+            {renderTasks}
+        </>
     );
 }
 
