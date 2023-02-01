@@ -3,10 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface EmployeeState {
     value: string[],
+    isError: boolean,
+    isFetching: boolean,
+    isLoading: boolean,
+    isSuccess: boolean,
+
 }
 
 const initialState: EmployeeState = {
     value: [],
+    isError: false,
+    isFetching: false,
+    isLoading: false,
+    isSuccess: false,
 }
 
 export const employeesSlice = createSlice({
@@ -21,6 +30,6 @@ export const employeesSlice = createSlice({
 
 export const { setAllEmployees } = employeesSlice.actions;
 
-export const getAllEmployees = ((state) => state.persistedReducer.employees.value);
+export const selectAllEmployees = ((state) => state.persistedReducer.employees.value);
 
 export default employeesSlice.reducer;

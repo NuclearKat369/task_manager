@@ -1,6 +1,5 @@
 import { apiSlice } from "../services/apiSlice";
-
-const STATUS_API_BASE_URL = "/showStatus";
+import { STATUS_API_BASE_URL } from "./globalConst";
 
 export const taskStatusApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({

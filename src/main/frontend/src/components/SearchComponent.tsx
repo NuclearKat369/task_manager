@@ -1,8 +1,5 @@
 function SearchComponent({searchKey}) {
 
-
-
-
     return (
         <>
 

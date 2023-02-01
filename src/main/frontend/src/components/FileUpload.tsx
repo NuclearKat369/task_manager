@@ -1,26 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../features/store';
+import { useEffect, useRef } from 'react';
 import { BsTrash } from 'react-icons/bs';
-import { isVisible } from '@testing-library/user-event/dist/utils';
-import { getTaskFiles } from '../features/newSlices/taskFileSlice';
-import { selectCurrentToken } from '../features/auth/authSlice';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { FILEDATA_API_BASE_URL } from '../features/globalConst';
 
-const FILEDATA_API_BASE_URL = "http://localhost:8080/files";
 
-const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, removeFiles, setRemoveFiles }) => {
+const FileUpload = ({ files, setFiles, selectedFiles, setSelectedFiles, removeFiles, setRemoveFiles }) => {
 
     const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
-        console.log("USE EFFECT FileUpload")
-    })
+    }, [])
 
     const filePicker = useRef(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files;
-        console.log("event.target.files: ", event.target.files)
         if (selectedFiles === null) {
             setSelectedFiles([...file]);
         }
@@ -36,9 +30,8 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
 
     // Скачивание файла
     const downloadFile = (fileId, fileName) => {
-        console.log("key: ", fileId)
         axiosPrivate.get(FILEDATA_API_BASE_URL + "/data/" + fileId, { responseType: "blob" }).then((res) => {
-            console.log(res)
+            console.log(res);
             const url = window.URL.createObjectURL(new Blob([res.data]));
             let anchor = document.createElement("a");
             anchor.href = url;
@@ -58,14 +51,14 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
     }
 
     const deleteFile = (fileId) => {
-        const found = removeFiles.find(item => { return item == fileId });
-        if (!found)
-            setRemoveFiles([...removeFiles, fileId]);
-        setFiles(files.filter(item => item.fileId !== fileId));
 
-    }
-    const cancelDeleteFile = (fileId) => {
-        setRemoveFiles(removeFiles.filter(item => item !== fileId));
+        console.log("removeFiles deleteFile: ", removeFiles)
+        const found = removeFiles.find(item => { console.log("item: ", item); return item == fileId });
+        if (!found) {
+            setRemoveFiles([...removeFiles, fileId]);
+            console.log("found? ", found);
+        }
+        setFiles(files.filter(item => item.fileId !== fileId));
     }
 
     // Рендер выбранных для загрузки файлов
@@ -96,13 +89,13 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
             return (
                 <tr key={item.fileId}
                     onClick={() => downloadFile(item.fileId, item.fileName)}>
-                    <td>{item.fileName}</td>
+                    <td role="button">{item.fileName}</td>
                     <td className="flex-shrink-1 text-end">
                         <button className="bg-danger"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 deleteFile(item.fileId);
-                                console.log(removeFiles);
+                                console.log("removeFiles: ", removeFiles);
                             }}>
                             <BsTrash />
                         </button>
@@ -118,13 +111,13 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
         <>
             <div className="d-flex flex-row">
                 <div className="d-flex flex-column fs-6 col-12">
-                    <button onClick={handleFilePick}>Добавить вложение</button>
+                    <button className="btn btn-layout fw-bold" onClick={handleFilePick}>Добавить вложение</button>
                     <input className="hidden"
                         type="file"
                         multiple
                         ref={filePicker}
                         onChange={handleFileChange}
-                        accept="image/*,.pdf,.docx"
+                        accept="image/*,.pdf, .txt, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp, .log, .jpeg, .jpg, .bmp, .png, .html"
                     />
                     <div className="d-flex flex-row">
                         <table className="table">
@@ -146,7 +139,6 @@ const FileUpload = ({ taskId, files, setFiles, selectedFiles, setSelectedFiles, 
                                 {renderFiles}
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

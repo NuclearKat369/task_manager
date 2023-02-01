@@ -49,6 +49,13 @@ public class Employee implements UserDetails {
                     name = "role_role_id", referencedColumnName = "role_id", updatable = false))
     private Collection<Role> roles;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "position_id", referencedColumnName = "position_id")
+    private Position employeePosition;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    private Department employeeDepartment;
 
     @Column(name = "is_locked")
     @JsonIgnore

@@ -1,13 +1,15 @@
 package com.nuclear_kat.task_manager.auth;
 
 import com.nuclear_kat.task_manager.auth.token.refresh.*;
-import com.nuclear_kat.task_manager.config.JwtService;
+import com.nuclear_kat.task_manager.dto.ChangePasswordDto;
+import com.nuclear_kat.task_manager.security.JwtService;
 import com.nuclear_kat.task_manager.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -25,20 +27,22 @@ public class AuthenticationController {
     @Autowired
     public EmployeeService employeeService;
     @Autowired
-    public RefreshTokenService refreshTokenService;
+    public RefreshTokenServiceImpl refreshTokenService;
 
+    // Регистрация пользователя
     @PostMapping("/register")
-    public ResponseEntity<String> register(
-            @RequestBody RegisterRequest request) {
+    public ResponseEntity<Integer> register(
+            @RequestBody RegisterRequestDto request, HttpServletResponse response) {
         System.out.println("register");
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
+    // Аутентификация пользователя
     @PostMapping("/authenticate")
-    public AuthenticationResponse authenticate(
-            @RequestBody AuthenticationRequest request, HttpServletResponse response) throws IOException {
+    public AuthenticationResponseDto authenticate(
+            @RequestBody AuthenticationRequestDto request, HttpServletResponse response) throws IOException {
         System.out.println("authenticate");
-        AuthenticationResponse authRes = authenticationService.authenticate(request);
+        AuthenticationResponseDto authRes = authenticationService.authenticate(request);
         Cookie refreshTokenCookie = new Cookie(
                 "refreshToken", URLEncoder.encode(authRes.getRefreshToken(), "UTF-8"));
         refreshTokenCookie.setHttpOnly(true);
@@ -48,11 +52,13 @@ public class AuthenticationController {
         return authRes;
     }
 
+    // Подтверждение почты
     @GetMapping("/confirm")
     public String confirm(@RequestParam("token") String token) {
         return authenticationService.confirmToken(token);
     }
 
+    // Получение нового access-токена
     @GetMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(
             @CookieValue(name = "refreshToken") String token) {
@@ -63,8 +69,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Integer> logout(@RequestHeader("RefreshToken") String request) {
-        return ResponseEntity.ok(refreshTokenService.deleteRefreshToken(new RefreshTokenRequest(request)));
+    // Выход из системы - удаление refresh-токена из БД
+    @DeleteMapping("/logout")
+    public ResponseEntity<Integer> logout(HttpServletRequest request) {
+        return ResponseEntity.ok(refreshTokenService.deleteByEmployee(request));
+    }
+
+    @PutMapping("/change-password/{employeeId}")
+    public int changePassword(@PathVariable String employeeId, @RequestBody ChangePasswordDto changePasswordDto){
+        int response = authenticationService.changeEmployeePassword(employeeId, changePasswordDto);
+        System.out.println("response on changePassword" + response);
+        return response;
     }
 }

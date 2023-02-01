@@ -33,7 +33,7 @@ export const taskListNewSlice = createSlice({
 })
 export const { setAllTasks } = taskListNewSlice.actions;
 
-export const getAllTasks = ((state) => state.persistedReducer.taskListNew.value);
-export const getIsSuccess = ((state) => state.persistedReducer.taskListNew.isSuccess);
+export const selectAllTasks = ((state) => state.persistedReducer.taskListNew.value);
+export const selectIsSuccess = ((state) => state.persistedReducer.taskListNew.isSuccess);
 
 export default taskListNewSlice.reducer;

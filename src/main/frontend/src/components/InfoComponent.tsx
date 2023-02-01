@@ -17,7 +17,7 @@ function InfoComponent() {
 
     return (
         <div>
-            <h1>Справочная информация</h1>
+            <h1>Инструкция</h1>
             <div className="d-flex flex-container fs-3 p-2">
                 <div className="d-flex flex-column p-2">
                     <div className="d-flex flex-row fs-6 px-2">

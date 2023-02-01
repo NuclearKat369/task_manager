@@ -31,7 +31,6 @@ export const taskSubtypeSlice = createSlice({
 
 export const {setSubtypes} = taskSubtypeSlice.actions;
 
-// export const { addAllTasks } = taskListSlice.actions;
-export const getAllTaskSubtypes = ((state) => state.persistedReducer.taskSubtype.value);
+export const selectAllTaskSubtypes = ((state) => state.persistedReducer.taskSubtype.value);
 
 export default taskSubtypeSlice.reducer;

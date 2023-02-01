@@ -3,6 +3,8 @@ package com.nuclear_kat.task_manager.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/* Минимальная информация о заявке. используется при создании новой заявки,
+ * когда известны только текст, название и подтип */
 @Data
 @NoArgsConstructor
 public class TaskSubtypeDto {
@@ -18,5 +20,4 @@ public class TaskSubtypeDto {
         this.subtypeId = subtypeId;
         this.taskId = -1;
     }
-
 }

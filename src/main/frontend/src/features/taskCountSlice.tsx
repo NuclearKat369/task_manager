@@ -26,7 +26,7 @@ export const taskCountSlice = createSlice({
 
 export const { setCountAllTasks, setCountTasksByStatus } = taskCountSlice.actions
 
-export const getAllTasksCountValue = ((state) => state.persistedReducer.taskCount.valueAll);
-export const getTasksByStatusCountValue = ((state) => state.persistedReducer.taskCount.valueByStatus);
+export const selectAllTasksCountValue = ((state) => state.persistedReducer.taskCount.valueAll);
+export const selectTasksByStatusCountValue = ((state) => state.persistedReducer.taskCount.valueByStatus);
 
 export default taskCountSlice.reducer;

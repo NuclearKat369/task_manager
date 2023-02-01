@@ -1,29 +1,37 @@
 package com.nuclear_kat.task_manager.service;
 
-import com.nuclear_kat.task_manager.dto.TaskFullDto;
-import com.nuclear_kat.task_manager.dto.TaskStatusSubtypeDto;
+import com.nuclear_kat.task_manager.dto.*;
 import com.nuclear_kat.task_manager.entity.Task;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface TaskService {
 
-    public List<Task> getAllTasks();
+    Task saveTask(TaskSubtypeDto taskSubtypeDto, HttpServletRequest request);
+    TaskFullWithEmployeeInChargeDto saveTask(int taskId, UpdateTaskDto updateTaskDto, HttpServletRequest request);
 
-    public Task saveTask(Task task);
+    Task getTask(int taskId);
 
-    public Task getTask(int taskId);
+    void deleteTask(int taskId);
 
-    public void deleteTask(int taskId);
+    List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtype();
 
-    public List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtype();
+    List<TaskStatusSubtypeDto> getAllWithStatus(int statusId);
 
-//    public TaskStatusSubtypeDto getTaskByTaskIdWithStatusAndSubtype(int taskId);
+    TaskFullNoEmployeeInChargeDto getTaskFullInfo(int taskId);
 
-    public List<TaskStatusSubtypeDto> getAllWithStatus(int statusId);
+    long countTasksAll();
 
-    public TaskFullDto getTaskFullInfo(int taskId);
+    List<EmployeeTasksDto> getEmployeeTaskList();
 
-    public long countTasksAll();
+    EmployeeNoRolesDto getEmployeeInCharge(int taskId);
 
+    List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtypeCreatedByEmployee(HttpServletRequest request);
+
+    long countAllTasksCreated(HttpServletRequest request);
+
+    List<TaskStatusSubtypeDto> getAllTasksWithStatusAndSubtypeInCharge(HttpServletRequest request);
+
+    long countAllTasksInCharge(HttpServletRequest request);
 }

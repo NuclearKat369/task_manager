@@ -17,21 +17,22 @@ public class EmailService implements EmailSender {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
+    private final String senderEmail = "kat@taskhandler.ru";
 
     @Override
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String email, String subject) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setSubject("Confirm your email");
-            helper.setFrom("kat@taskhandler.ru");
+            helper.setSubject(subject);
+            helper.setFrom(senderEmail);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            LOGGER.error("Failed to send email", e);
-            throw new IllegalStateException("Failed to send email");
+            LOGGER.error("Ошибка отправки email", e);
+            throw new IllegalStateException("Ошибка отправки email");
         }
     }
 }

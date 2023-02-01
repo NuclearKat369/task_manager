@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export interface AuthState {
     accessToken: string,
     refreshToken: string,
@@ -9,8 +8,7 @@ export interface AuthState {
     firstName: string,
     patronymic: string,
     uuid: string,
-    status: string,
-    error: string,
+    roles: string,
 }
 
 const initialState = {
@@ -21,8 +19,7 @@ const initialState = {
     firstName: null,
     patronymic: null,
     uuid: null,
-    status: null,
-    error: null,
+    roles: null,
 };
 
 const authSlice = createSlice({
@@ -30,23 +27,40 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         setCredentials: (state, action) => {
-            const { email, accessToken }: any = action.payload;
+            const { email, accessToken, lastName, firstName, patronymic, uuid, roles }: any = action.payload;
             console.log('action.payload in auth', action.payload)
             state.email = email;
             state.accessToken = accessToken;
-            console.log('accessToken in auth', accessToken)
+            state.lastName = lastName;
+            state.firstName = firstName;
+            state.patronymic = patronymic;
+            state.uuid = uuid;
+            state.roles = roles;
         },
         logOut: (state, action) => {
-            state.email = null;
             state.accessToken = null;
+            state.refreshToken = null;
+            state.email = null;
+            state.lastName = null;
+            state.firstName = null;
+            state.patronymic = null;
+            state.uuid = null;
+            state.roles = [];
         },
 
     }
 })
 
 
-export const {setCredentials, logOut} = authSlice.actions;
+export const { setCredentials, logOut } = authSlice.actions;
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state) => state.auth.email;
+export const selectCurrentEmail = (state) => state.auth.email;
+export const selectCurrentFirstName = (state) => state.auth.firstName;
+export const selectCurrentPatronymic = (state) => state.auth.patronymic;
+export const selectCurrentLastName = (state) => state.auth.lastName;
+export const selectCurrentUuid = (state) => state.auth.uuid;
 export const selectCurrentToken = (state) => state.auth.accessToken;
+export const selectCurrentRoles = (state) => state.auth.roles;
+export const selectCurrentRefreshToken = (state) => state.auth.refreshToken;
+export const selectCurrentAuth = (state) => state.auth;

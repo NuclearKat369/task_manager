@@ -1,6 +1,5 @@
 import { apiSlice } from "../services/apiSlice";
-
-const FILEDATA_API_BASE_URL = "http://localhost:8080/files";
+import { FILEDATA_API_BASE_URL } from "./globalConst";
 
 export const taskFileApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -9,7 +8,7 @@ export const taskFileApiSlice = apiSlice.injectEndpoints({
                 const { taskId } = arg;
                 console.log("getFiles ARG!!!!! ", arg);
                 return {
-                    url: FILEDATA_API_BASE_URL + "/" + taskId,
+                    url: FILEDATA_API_BASE_URL + `/task/${taskId}`,
                 }
             }
         }),
@@ -18,27 +17,22 @@ export const taskFileApiSlice = apiSlice.injectEndpoints({
                 const { fileId } = arg;
                 console.log("ARG!!!!! ", arg);
                 return {
-                    url: FILEDATA_API_BASE_URL + "/data/" + fileId,
+                    url: FILEDATA_API_BASE_URL + `/data/${fileId}`,
                 }
             }
-        })
+        }),
+        // Обращение к API для удаления из БД заявки с переданным ID
+        deleteFile: builder.mutation({
+            query: (fileId: any) => ({
+                url: FILEDATA_API_BASE_URL + `/${fileId}`,
+                method: 'DELETE',
+            }),
+        }),
     })
 })
-// Обращение к API для загрузки в БД файла
-// uploadFile(formData) {
-//     return axios.post(FILEDATA_API_BASE_URL + "/uploadFile", formData);
-// }
-
-// getFileById(fileId) {
-//     return axios.get(FILEDATA_API_BASE_URL + "/data/" + fileId, { responseType: "blob" })
-// }
-
-// // Обращение к API для удаления из БД заявки с переданным ID
-// deleteFile(fileId) {
-//     return axios.delete(FILEDATA_API_BASE_URL + "/" + fileId)
-// }
 
 export const {
     useGetFilesQuery,
     useGetFileByIdQuery,
+    useDeleteFileMutation,
 } = taskFileApiSlice;
