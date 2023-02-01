@@ -1,27 +1,25 @@
-import Employees from './Employees'
-import { Link } from 'react-router-dom'
-import { useAppSelector } from '../features/store'
-import { selectCurrentUser, selectCurrentToken } from '../features/auth/authSlice'
-import useRefreshToken from '../hooks/useRefreshToken'
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../features/store';
+import { selectCurrentToken, selectCurrentFirstName } from '../features/auth/authSlice';
 
 const ManagementComponent = () => {
 
-    const user = useAppSelector(selectCurrentUser);
+    const user = useAppSelector(selectCurrentFirstName);
+    //useAppSelector(selectCurrentUser);
+
     const token = useAppSelector(selectCurrentToken);
 
-    const management = user ? `Welcome ${user}!` : "Welcome!"
-    console.log("USER AND TOKEN IN MANAGEMENT",user, token)
+    const navigate = useNavigate();
+
+    console.log("USER AND TOKEN IN MANAGEMENT", user, token);
     const content = (
         <div>
             <h1>Администрирование</h1>
-            <br />
-            <Employees />
-            <br />
-            <h1>{management}</h1>
-            <div className="flex-grow">
-                <Link to="/">Главная</Link>
-                <Link to="/tasks/all">All Tasks?</Link>
+            <div className="btn-group py-2" role="group">
+                <button type="button" className="btn btn-layout" onClick={() => navigate("workload")}>Загруженность</button>
+                <button type="button" className="btn btn-layout" onClick={() => navigate("all-employees")}>Все сотрудники</button>
             </div>
+            <Outlet />
         </div>
     )
 

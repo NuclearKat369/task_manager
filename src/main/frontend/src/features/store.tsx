@@ -3,10 +3,15 @@ import taskReducer from "./taskSlice";
 import taskStatusReducer from "./taskStatusSlice";
 import taskSubtypeReducer from "./taskSubtypeSlice";
 import taskCountReducer from "./taskCountSlice";
-import taskFileReducer from "./newSlices/taskFileSlice";
+import taskFileReducer from "./taskFileSlice";
 import authReducer from "./auth/authSlice";
 import taskListNewReducer from "./taskListNewSlice";
 import employeesReducer from "./employeesSlice";
+import employeesWorkloadReducer from "./employeesWorkloadSlice";
+import taskHistoryReducer from './taskHistorySlice';
+import departmentReducer from './departmentSlice';
+import positionReducer from './positionSlice';
+import roleReducer from './roleSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import {
     persistStore,
@@ -29,6 +34,11 @@ const rootReducer = combineReducers({
     taskFiles: taskFileReducer,
     taskListNew: taskListNewReducer,
     employees: employeesReducer,
+    taskHistory: taskHistoryReducer,
+    employeesWorkload: employeesWorkloadReducer,
+    department: departmentReducer,
+    position: positionReducer,
+    role: roleReducer,
 });
 
 const persistConfig = {

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.Collection;
 import java.util.UUID;
 
+/*EmployeeDto - краткая информация о сотруднике, содержит UUID, ФИО, email, роли;
+* для более полной информации использовать EmployeeFullDto; не содержит пароля */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

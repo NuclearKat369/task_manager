@@ -1,5 +1,4 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const Unauthorized = () => {
 
@@ -11,7 +10,7 @@ const Unauthorized = () => {
             <br />
             <p>У вас нет доступа к данной странице</p>
             <div className="flex-grow">
-                <button onClick={goBack}>Назад</button>
+                <button className="btn btn-layout" onClick={goBack}>Назад</button>
             </div>
         </div>
     )

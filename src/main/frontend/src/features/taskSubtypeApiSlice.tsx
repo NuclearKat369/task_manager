@@ -1,7 +1,5 @@
 import { apiSlice } from "../services/apiSlice";
-import { TaskStatusType } from "./enums";
-
-const SUBTYPE_API_BASE_URL = "/showSubtype";
+import { SUBTYPE_API_BASE_URL } from "./globalConst";
 
 export const taskListApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -14,7 +12,7 @@ export const taskListApiSlice = apiSlice.injectEndpoints({
             query: (arg) => {
                 const { subtypeId } = arg;
                 return {
-                    url: SUBTYPE_API_BASE_URL + "/getSubtype/" + subtypeId,
+                    url: SUBTYPE_API_BASE_URL + `/getSubtype/${subtypeId}`,
                 }
             }
         }),

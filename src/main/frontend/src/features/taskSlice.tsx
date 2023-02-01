@@ -21,6 +21,7 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         setTask: (state, action) => {
+            console.log("action.payload.value setTask: ", action.payload.value)
             state.value = action.payload.value;
             state.isError = action.payload.isError;
             state.isFetching = action.payload.isFetching;
@@ -32,6 +33,6 @@ export const taskSlice = createSlice({
 
 export const { setTask } = taskSlice.actions;
 
-export const getTask = ((state) => state.persistedReducer.task.value);
+export const selectTask = ((state) => state.persistedReducer.task.value);
 
 export default taskSlice.reducer;
