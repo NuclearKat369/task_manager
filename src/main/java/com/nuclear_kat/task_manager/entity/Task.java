@@ -52,10 +52,6 @@ public class Task {
     @JsonIgnore
     private List<FileData> taskFiles;
 
-    public Task(String taskName, String taskText) {
-        this.taskName = taskName;
-        this.taskText = taskText;
-    }
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
@@ -67,4 +63,13 @@ public class Task {
     @JoinColumn(name = "task_employee_in_charge", referencedColumnName = "employee_id")
     private Employee employeeInCharge;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "modified_by", referencedColumnName = "employee_id")
+    private Employee modifiedBy;
+
+    public Task(String taskName, String taskText) {
+        this.taskName = taskName;
+        this.taskText = taskText;
+    }
 }

@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { setCredentials, logOut } from "../features/auth/authSlice"
-import { useAppSelector } from "../features/store";
-
-const API_BASE_URL = "http://localhost:8080";
+import { API_BASE_URL } from "../features/globalConst";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: API_BASE_URL,
@@ -22,13 +20,21 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result: any = await baseQuery(args, api, extraOptions);
     if (result?.error?.status === 403) {
         console.log("sending refresh token");
-        //send the refresh token to get new access token
+        // Отправка refresh-токена для получения нового access токена
         const refreshResult: any = await baseQuery("/auth/refresh-token", api, extraOptions);
         console.log("refreshResult: ", refreshResult);
         if (refreshResult?.data) {
-            //store the new token
-            api.dispatch(setCredentials({ email: refreshResult.data.email, accessToken: refreshResult.data.accessToken },));
-            //retry the original query with new access token
+            // Сохранение нового токена
+            api.dispatch(setCredentials({
+                email: refreshResult.data.email,
+                accessToken: refreshResult.data.accessToken,
+                lastName: refreshResult.data.lastName,
+                firstName: refreshResult.data.firstName,
+                patronymic: refreshResult.data.patronymic,
+                uuid: refreshResult.data.employeeId,
+                roles: refreshResult.data.roles,
+            },));
+            // Повторная отправка изначального запроса с новым access-токеном
             result = await baseQuery(args, api, extraOptions);
         }
         else {

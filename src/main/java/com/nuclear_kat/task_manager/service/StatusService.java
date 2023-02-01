@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface StatusService {
 
-    public List<Status> getAllStatuses();
+    List<Status> getAllStatuses();
+//
+//    void saveStatus(Status status);
 
-    public void saveStatus(Status status);
+    Status getStatus(int statusId);
+//
+//    void deleteStatus(int statusId);
 
-    public Status getStatus(int statusId);
-
-    public void deleteStatus(int statusId);
-
-    public List<TaskStatusCountDto> countTasksByTaskStatus();
+    List<TaskStatusCountDto> countTasksByTaskStatus();
 }

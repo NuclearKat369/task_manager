@@ -16,6 +16,7 @@ public class StatusController {
     @Autowired
     private StatusService statusService;
 
+    // Отображение всех статусов
     @GetMapping("/getStatus/all")
     public List<Status> showAllStatuses() {
         List<Status> allStatuses = statusService.getAllStatuses();
@@ -23,6 +24,7 @@ public class StatusController {
         return allStatuses;
     }
 
+    // Получение статуса по ID
     @GetMapping("/getStatus/{statusId}")
     public Status getStatus(@PathVariable int statusId) {
         Status status = statusService.getStatus(statusId);
@@ -30,6 +32,7 @@ public class StatusController {
         return status;
     }
 
+    // Получение количества задач с определённым статусом
     @GetMapping("/getNumberByStatus")
     public List<TaskStatusCountDto> countTasksByTaskStatus(){
         return statusService.countTasksByTaskStatus();

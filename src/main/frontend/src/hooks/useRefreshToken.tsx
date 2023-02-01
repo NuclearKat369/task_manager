@@ -1,25 +1,31 @@
-import { useDispatch } from "react-redux";
-import { logOut, selectCurrentToken, selectCurrentUser, setCredentials } from "../features/auth/authSlice";
+import { logOut, selectCurrentToken, selectCurrentEmail, setCredentials } from "../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../features/store";
 import axios from "../services/axios";
 
 const useRefreshToken = () => {
 
     const access = useAppSelector(selectCurrentToken);
-    const email = useAppSelector(selectCurrentUser);
+    const email = useAppSelector(selectCurrentEmail);
     const dispatch = useAppDispatch();
 
     console.log("EMAIL IN useRefreshToken", email);
-    
+
 
     const refresh = async () => {
         const response = await axios.get("/auth/refresh-token", {
             withCredentials: true
         })
         if (response?.data) {
-            //store the new token
-            dispatch(setCredentials({ email: response.data.email, accessToken: response.data.accessToken }));
-            //retry the original query with new access token
+            // Сохранение обновлённых данных
+            dispatch(setCredentials({
+                email: response.data.email,
+                accessToken: response.data.accessToken,
+                lastName: response.data.lastName,
+                firstName: response.data.firstName,
+                patronymic: response.data.patronymic,
+                uuid: response.data.employeeId,
+                roles: response.data.roles,
+            }));
         }
         else {
             dispatch(logOut(""));

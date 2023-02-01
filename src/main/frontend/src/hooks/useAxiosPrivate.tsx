@@ -15,7 +15,6 @@ const useAxiosPrivate = () => {
                 if (!config.headers["Authorization"]) {
                     config.headers["Authorization"] = `Bearer ${accessToken}`;
                 }
-                console.log("THIS IS CONFIG IN requestIntercept: ", config);
                 return config;
             }, (error) => Promise.reject(error)
         );
@@ -23,7 +22,6 @@ const useAxiosPrivate = () => {
             response => response,
             async (error) => {
                 const prevRequest = error?.config;
-                console.log("THIS IS CONFIG IN responseIntercept: ", error);
                 if (error?.response?.status === 403 && !prevRequest?.sent) {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();

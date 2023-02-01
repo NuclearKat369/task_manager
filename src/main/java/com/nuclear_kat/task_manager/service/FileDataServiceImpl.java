@@ -18,11 +18,13 @@ public class FileDataServiceImpl implements FileDataService {
     @Autowired
     private FileDataRepository fileDataRepository;
 
+    // Получить все файлы
     @Override
     public List<FileData> getAllFileData() {
         return fileDataRepository.findAll();
     }
 
+    // Сохранение файлов (поддерживается сохраниение списка файлов)
     @Override
     public void saveFileData(MultipartFile multipartFile, Task fileTask) throws IOException {
         String fileName = multipartFile.getOriginalFilename();
@@ -31,6 +33,7 @@ public class FileDataServiceImpl implements FileDataService {
         fileDataRepository.save(fileData);
     }
 
+    // Получение файла по ID
     @Override
     public FileData getFileData(int fileDataId) {
         FileData fileData = null;
@@ -41,6 +44,7 @@ public class FileDataServiceImpl implements FileDataService {
         return fileData;
     }
 
+    // Получение данных файла (для скачивания)
     @Override
     public byte[] getFileBytes(int fileDataId) {
         FileData fileData = null;
@@ -49,14 +53,15 @@ public class FileDataServiceImpl implements FileDataService {
             fileData = optional.get();
         }
         return fileData.getFileData();
-
     }
 
+    // Удаление файла
     @Override
     public void deleteFileData(int fileDataId) {
         fileDataRepository.deleteById(fileDataId);
     }
 
+    // Получение только названия и ID файла
     @Override
     public List<TaskFileDto> getAllFileDataByTaskId(int taskId) {
         return fileDataRepository.getFileDataByTaskId(taskId);

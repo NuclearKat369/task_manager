@@ -20,10 +20,10 @@ public class FileDataController {
 
     @Autowired
     private FileDataService fileDataService;
-
     @Autowired
     private TaskService taskService;
 
+    // Загрузка нового файла
     @PostMapping("/uploadFile")
     private String uploadFileData(
             @RequestParam("taskId") int taskId,
@@ -39,6 +39,7 @@ public class FileDataController {
         return ("files uploaded: " + multipartFiles.length);
     }
 
+    // Поиск файла по ID
     @GetMapping("/{fileId}")
     public FileData getFile(@PathVariable int fileId) {
         return fileDataService.getFileData(fileId);
@@ -49,22 +50,22 @@ public class FileDataController {
         return fileDataService.getFileBytes(fileId);
     }
 
+    // Получение списка всех файлов заявки
     @GetMapping("/task/{taskId}")
     public List<TaskFileDto> getFiles(@PathVariable int taskId) {
         return fileDataService.getAllFileDataByTaskId(taskId);
     }
 
+    // Получение всех файлов
     @GetMapping("/all")
     public List<FileData> getAllFiles() {
         return fileDataService.getAllFileData();
     }
 
+    // Удаление файла по ID
     @DeleteMapping("/{fileId}")
     public String deleteFileData(@PathVariable int fileId) {
-
         fileDataService.deleteFileData(fileId);
-
         return "File with ID = " + fileId + " was deleted from Database";
     }
-
 }

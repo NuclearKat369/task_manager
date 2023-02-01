@@ -15,11 +15,13 @@ public class SubtypeController {
     @Autowired
     private SubtypeService subtypeService;
 
+    // Отображение всех подтипов задач
     @GetMapping("/getSubtype/all")
     public List<Subtype> showAllSubtypes() {
         return subtypeService.getAllSubtypes();
     }
 
+    // Получение подтипа по ID
     @GetMapping("/getSubtype/{subtypeId}")
     public Subtype getSubtype(@PathVariable int subtypeId) {
         return subtypeService.getSubtype(subtypeId);

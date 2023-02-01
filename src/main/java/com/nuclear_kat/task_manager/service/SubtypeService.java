@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface SubtypeService {
 
-    public List<Subtype> getAllSubtypes();
+    List<Subtype> getAllSubtypes();
+//
+//    void saveSubtype(Subtype subtype);
 
-    public void saveSubtype(Subtype subtype);
+    Subtype getSubtype(int subtypeId);
 
-    public Subtype getSubtype(int subtypeId);
-
-    public void deleteSubtype(int subtypeId);
+    void deleteSubtype(int subtypeId);
 }
