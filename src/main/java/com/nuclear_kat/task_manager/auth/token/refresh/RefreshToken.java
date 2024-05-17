@@ -22,7 +22,7 @@ public class RefreshToken {
     @Column(name = "expires_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
     private LocalDateTime expiresAt;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee", referencedColumnName ="employee_id", nullable = false)
+    @JoinColumn(name = "employee", referencedColumnName = "employee_id", nullable = false)
     private Employee employee;
 
     public RefreshToken(String token, LocalDateTime expiresAt, Employee employee) {

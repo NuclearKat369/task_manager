@@ -3,7 +3,7 @@ import { selectAllEmployees } from "../features/employeesSlice";
 import { useAppSelector } from "../features/store";
 import { selectAllEmployeesWorkload } from "../features/employeesWorkloadSlice";
 
-const WorkloadChart = () => {
+const EmployeeWorkloadChart = () => {
 
     const allEmployees = useAppSelector(selectAllEmployees);
     const allEmployeesWorkload = useAppSelector(selectAllEmployeesWorkload);
@@ -127,4 +127,4 @@ const WorkloadChart = () => {
     )
 }
 
-export default WorkloadChart;
+export default EmployeeWorkloadChart;

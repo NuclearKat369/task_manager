@@ -16,18 +16,22 @@ public class StatusRepositoryCriteriaImpl implements StatusRepositoryCriteria {
     @PersistenceContext
     EntityManager em;
 
-    /*  Подсчёт количества заявок с определённым статусом
-    select status.status_id, status_name, count (tasks.task_status) as status_count
-    from status left join tasks on tasks.task_status=status.status_id
-    group by status.status_id */
+    /* Подсчёт количества заявок с определённым статусом
+     * select status.status_id, status_name, count (tasks.task_status) as status_count
+     * from status left join tasks on tasks.task_status=status.status_id
+     * group by status.status_id
+     */
     @Override
     public List<TaskStatusCountDto> taskStatusCountDto() {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TaskStatusCountDto> cq = cb.createQuery(TaskStatusCountDto.class);
+        // from status
         Root<Status> statusRoot = cq.from(Status.class);
+        // left join tasks on tasks.task_status=status.status_id
         Join<Object, Object> tasks = statusRoot.join("tasks", JoinType.LEFT);
 
+        // left join status on tasks.task_status=status.status_id - для выполнения подсчёта
         Join<Object, Object> subStatuses = tasks.join("taskStatus", JoinType.LEFT);
 
         cq.select(cb.construct(
@@ -36,6 +40,7 @@ public class StatusRepositoryCriteriaImpl implements StatusRepositoryCriteria {
                 statusRoot.get("statusName").alias("status_name"),
                 cb.count(subStatuses.get("statusId")).alias("status_count")
         ));
+        // group by status.status_id
         cq.groupBy(statusRoot.get("statusId"), statusRoot.get("statusName"));
         TypedQuery<TaskStatusCountDto> query = em.createQuery(cq);
         List<TaskStatusCountDto> results = query.getResultList();

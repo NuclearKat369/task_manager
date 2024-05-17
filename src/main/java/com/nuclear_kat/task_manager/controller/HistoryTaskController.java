@@ -14,6 +14,7 @@ public class HistoryTaskController {
     @Autowired
     HistoryTaskService historyTaskService;
 
+    // Получение всей истории по заявке
     @GetMapping("/{taskId}")
     public List<HistoryTaskDto> getHistoryTask(@PathVariable int taskId) {
         List<HistoryTaskDto> list = historyTaskService.getAllTaskHistory(taskId);

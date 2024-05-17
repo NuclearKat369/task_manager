@@ -3,7 +3,7 @@ import { BsTrash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteTaskMutation } from '../features/taskListApiSlice';
 
-function ListedTasksComponent({ sorted, setSorted, order, setOrder, sortBy, sortRequest, setSortRequest }) {
+function ListedTasks({ sorted, setSorted, order, setOrder, sortBy, sortRequest, setSortRequest }) {
 
     const allTasks = sorted;
     const [deleteTask] = useDeleteTaskMutation();
@@ -29,6 +29,9 @@ function ListedTasksComponent({ sorted, setSorted, order, setOrder, sortBy, sort
                 sortData(sortBy);
             }
     }, [sortRequest]);
+
+    useEffect(() => {
+    }, []);
 
     // Форматирование даты
     const getDate = (date) => {
@@ -206,4 +209,4 @@ function ListedTasksComponent({ sorted, setSorted, order, setOrder, sortBy, sort
     );
 }
 
-export default ListedTasksComponent;
+export default ListedTasks;

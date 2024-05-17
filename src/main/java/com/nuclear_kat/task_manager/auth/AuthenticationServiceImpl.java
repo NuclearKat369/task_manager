@@ -108,12 +108,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public int changeEmployeePassword(String employeeId, ChangePasswordDto changePasswordDto) {
         Employee employee = employeeService.getEmployeeByUuid(UUID.fromString(employeeId));
 
-        // TODO remove, for development
-        if (employee.getPassword() == null) {
-            employeeRepository.updatePassword(employee.getUuid(),
-                    passwordEncoder.encode(changePasswordDto.getNewPassword()));
-            return 3000;
-        }
         // Проверка, совпадает ли текущий пароль с введённым
         if (passwordEncoder.matches(changePasswordDto.getCurrentPassword(),
                 employee.getPassword())) {
@@ -155,3 +149,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return emailBuilder.buildConfirmed(confirmationToken.getEmployee().getEmail(), link);
     }
 }
+
+//        // TODO remove, for development
+//        if (employee.getPassword() == null) {
+//            employeeRepository.updatePassword(employee.getUuid(),
+//                    passwordEncoder.encode(changePasswordDto.getNewPassword()));
+//            return 3000;
+//        }

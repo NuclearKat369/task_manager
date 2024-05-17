@@ -228,7 +228,6 @@ public class TaskServiceImpl implements TaskService {
         return list;
     }
 
-
     // Проверка наличия дубликатов по UUID и объединение в один элемент списка
     private List<EmployeeTasksDto> filterDuplicates(List<EmployeeTasksDto> list) {
         List<EmployeeTasksDto> newList = new ArrayList<>();
@@ -265,6 +264,5 @@ public class TaskServiceImpl implements TaskService {
         }
         return sortedList;
     }
-
 }
 

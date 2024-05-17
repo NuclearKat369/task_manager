@@ -40,5 +40,4 @@ public class Position {
         employees.add(employee);
         employee.setEmployeePosition(this);
     }
-
 }

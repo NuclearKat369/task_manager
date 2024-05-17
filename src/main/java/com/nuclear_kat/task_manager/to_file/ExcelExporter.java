@@ -26,7 +26,6 @@ public class ExcelExporter implements FileExporter {
         workbook = new XSSFWorkbook();
     }
 
-
     private void writeHeaderLine() {
         sheet = workbook.createSheet("Статистика");
 
@@ -45,7 +44,6 @@ public class ExcelExporter implements FileExporter {
         createCell(row, 4, "В работе", style);
         createCell(row, 5, "Решённые", style);
         createCell(row, 6, "Завершённые", style);
-
     }
 
     private void createCell(Row row, int columnCount, Object value, CellStyle style) {

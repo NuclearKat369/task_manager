@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../features/store';
 import { useGetTaskEmployeeInChargeQuery, useGetTaskQuery } from '../features/taskListApiSlice';
 import { setTask } from '../features/taskSlice';
-import CreateOrUpdateTaskComponent from './CreateOrUpdateTaskComponent';
+import CreateOrUpdateTask from './CreateOrUpdateTask';
 import { setAllTaskFiles } from '../features/taskFileSlice';
 import { useGetFilesQuery } from '../features/taskFileApiSlice';
 import { useGetAllEmployeeWithRoleQuery } from '../features/employeesApiSlice';
@@ -11,7 +11,7 @@ import { setAllEmployees } from '../features/employeesSlice';
 import { useGetTaskHistoryQuery } from '../features/taskHistoryApiSlice';
 import { setTaskHistory } from '../features/taskHistorySlice';
 
-function TaskCardComponent() {
+function TaskCard() {
 
     const params = useParams();
     const taskId = params.id;
@@ -92,7 +92,7 @@ function TaskCardComponent() {
 
             }
             return (
-                <CreateOrUpdateTaskComponent />
+                <CreateOrUpdateTask />
             )
         }
         else if (task.isLoading || employeeItList.isLoading || taskHistory.isLoading) {
@@ -110,4 +110,4 @@ function TaskCardComponent() {
     );
 }
 
-export default TaskCardComponent;
+export default TaskCard;

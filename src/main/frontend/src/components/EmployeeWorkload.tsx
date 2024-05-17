@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useGetAllEmployeeWithRoleQuery, useGetAllEmployeesWorkloadQuery } from '../features/employeesApiSlice';
-import WorkloadChart from './WorkloadChart';
+import EmployeeWorkloadChart from './EmployeeWorkloadChart';
 import EmployeeWorkLoadTable from './EmployeeWorkloadTable';
 import { useAppDispatch } from '../features/store';
 import { setAllEmployees } from '../features/employeesSlice';
@@ -8,7 +8,7 @@ import { setAllEmployeesWorkload } from '../features/employeesWorkloadSlice';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { TASK_API_BASE_URL } from '../features/globalConst';
 
-const EmployeeWorkloadComponent = () => {
+const EmployeeWorkload = () => {
 
     const employees = useGetAllEmployeeWithRoleQuery({ roleId: 3 }, { refetchOnMountOrArgChange: true });
     const employeesWorkload = useGetAllEmployeesWorkloadQuery();
@@ -96,7 +96,7 @@ const EmployeeWorkloadComponent = () => {
                     id="profile"
                     role="tabpanel"
                     aria-labelledby="profile-tab">
-                    <WorkloadChart />
+                    <EmployeeWorkloadChart />
                 </div>
             </div>
         </div>
@@ -109,4 +109,4 @@ const EmployeeWorkloadComponent = () => {
     )
 }
 
-export default EmployeeWorkloadComponent
+export default EmployeeWorkload;

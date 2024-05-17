@@ -1,4 +1,4 @@
-import { apiSlice } from "../services/apiSlice";
+import { apiSlice } from "./apiSlice";
 import { EMPLOYEE_API_BASE_URL, TASK_API_BASE_URL } from "./globalConst";
 
 export const employeesApiSlice = apiSlice.injectEndpoints({

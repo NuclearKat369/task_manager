@@ -6,7 +6,7 @@ import { selectAllDepartments } from '../features/departmentSlice';
 import { selectAllPositions } from '../features/positionSlice';
 import { selectAllRoles } from '../features/roleSlice';
 
-const EmployeeCardComponent = () => {
+const EmployeeCard = () => {
 
     const params = useParams();
 
@@ -378,4 +378,4 @@ const EmployeeCardComponent = () => {
     )
 }
 
-export default EmployeeCardComponent
+export default EmployeeCard;

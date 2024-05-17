@@ -33,9 +33,10 @@ public class TaskRepositoryCriteriaImpl implements TaskRepositoryCriteria {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<EmployeeTasksDto> cq = cb.createQuery(EmployeeTasksDto.class);
+        // from tasks
         Root<Task> taskRoot = cq.from(Task.class);
+        // left join employee on tasks.task_employee_in_charge=employee.employee_id
         Join<Object, Object> employee = taskRoot.join("employeeInCharge", JoinType.LEFT);
-
 
         cq.select(cb.construct(
                 EmployeeTasksDto.class,
@@ -45,9 +46,10 @@ public class TaskRepositoryCriteriaImpl implements TaskRepositoryCriteria {
                 employee.get("patronymic").alias("patronymic"),
                 cb.count(taskRoot.get("employeeInCharge")).alias("task_count"),
                 taskRoot.get("taskStatus").alias("task_status")
-
         ));
+        // group by employee.employee_id, tasks.task_status, status.status_name
         cq.groupBy(employee.get("uuid"), taskRoot.get("taskStatus"));
+        // выборка только not null значений
         cq.where(cb.isNotNull(taskRoot.get("employeeInCharge")));
         TypedQuery<EmployeeTasksDto> query = em.createQuery(cq);
         List<EmployeeTasksDto> results = query.getResultList();

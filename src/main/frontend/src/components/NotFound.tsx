@@ -1,4 +1,4 @@
-function NotFoundComponent({}) {
+function NotFound({}) {
 
 
     return (
@@ -8,4 +8,4 @@ function NotFoundComponent({}) {
     )
 }
 
-export default NotFoundComponent;
+export default NotFound;

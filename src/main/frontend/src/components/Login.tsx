@@ -4,7 +4,7 @@ import { setCredentials } from '../features/auth/authSlice';
 import { useAppDispatch } from '../features/store';
 import { useLoginMutation } from '../features/auth/authApiSlice';
 
-const LoginComponent = () => {
+const Login = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -117,4 +117,4 @@ const LoginComponent = () => {
     )
 }
 
-export default LoginComponent;
+export default Login;
