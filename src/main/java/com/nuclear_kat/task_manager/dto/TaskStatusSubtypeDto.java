@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/* Краткая информация о заявке - статус, подтип, ID, заголовок, датаи время создания, EmployeeNoRolesDto
+/* Краткая информация о заявке - статус, подтип, ID, заголовок, дата и время создания, EmployeeNoRolesDto
  * с данными ответственного */
 @Data
 @NoArgsConstructor
@@ -32,6 +32,5 @@ public class TaskStatusSubtypeDto {
         this.taskName = taskName;
         this.taskCreatedAt = taskCreatedAt;
         this.employeeInCharge = new EmployeeNoRolesDto(employeeInChargeUuid);
-
     }
 }

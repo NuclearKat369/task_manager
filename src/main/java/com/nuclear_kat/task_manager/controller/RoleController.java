@@ -16,6 +16,7 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    // Получение списка всех ролей
     @GetMapping
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();

@@ -12,5 +12,5 @@ public interface SubtypeService {
 
     Subtype getSubtype(int subtypeId);
 
-    void deleteSubtype(int subtypeId);
+//    void deleteSubtype(int subtypeId);
 }

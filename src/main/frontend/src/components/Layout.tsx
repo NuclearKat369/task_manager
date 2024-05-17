@@ -8,10 +8,10 @@ import { selectCurrentFirstName, selectCurrentLastName, selectCurrentPatronymic,
 import { useGetSubtypesQuery } from '../features/taskSubtypeApiSlice';
 import { setSubtypes } from '../features/taskSubtypeSlice';
 import { useLogoutMutation } from '../features/auth/authApiSlice';
-import FooterComponent from './FooterComponent';
+import Footer from './Footer';
 import { setAllTaskStatuses } from '../features/taskStatusSlice';
 
-function LayoutComponent() {
+function Layout() {
 
     const [searchTaskId, setSearchTaskId] = useState("");
     const loggedIn = useAppSelector(selectCurrentEmail);
@@ -179,7 +179,7 @@ function LayoutComponent() {
                 </div>
                 {loggedIn == null ? (
                     <div className="App d-flex flex-row justify-content-center">
-                        <div className="d-flex flex-column p-2 justify-content-center">
+                        <div className="col-md-4 p-2 justify-content-center">
                             <Outlet />
                         </div>
                     </div>
@@ -208,9 +208,9 @@ function LayoutComponent() {
                     </div>
                 )}
             </div >
-            <FooterComponent />
+            <Footer />
         </div>
     );
 }
 
-export default LayoutComponent;
+export default Layout;

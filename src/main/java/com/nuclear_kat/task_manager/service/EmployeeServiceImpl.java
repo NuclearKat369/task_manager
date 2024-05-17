@@ -177,6 +177,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                         request.getHeader(AUTHORIZATION).substring(7)));
     }
 
+    // Получение сущности Employee из класса EmployeeFullDto
     private Employee entityFromEmployeeFullDto(EmployeeFullDto employeeFullDto, String employeeId) {
         Employee employee = getEmployeeByUuid(UUID.fromString(employeeId));
         Position position = employeeFullDto.getPosition();

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
@@ -76,7 +75,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/change-password/{employeeId}")
-    public int changePassword(@PathVariable String employeeId, @RequestBody ChangePasswordDto changePasswordDto){
+    public int changePassword(@PathVariable String employeeId, @RequestBody ChangePasswordDto changePasswordDto) {
         int response = authenticationService.changeEmployeePassword(employeeId, changePasswordDto);
         System.out.println("response on changePassword" + response);
         return response;

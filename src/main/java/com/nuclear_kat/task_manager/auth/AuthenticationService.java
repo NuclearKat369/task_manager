@@ -11,5 +11,4 @@ public interface AuthenticationService {
     String confirmToken(String token);
 
     int changeEmployeePassword(String employeeId, ChangePasswordDto changePasswordDto);
-
 }

@@ -19,5 +19,4 @@ public class AuthenticationResponseDto {
     private String lastName;
     private String patronymic;
     private Collection<Role> roles;
-
 }

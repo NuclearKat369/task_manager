@@ -25,21 +25,27 @@ const TaskHistory = () => {
     let previousMessages = [taskHistory]
         ? (taskHistory.map((item) => {
             return (
-                <div>
-                    <div className="d-flex flex-row border-top border-bottom">
-                        <div className="d-flex flex-column border-end p-1">{getDate(item.historyLastUpdated)}</div>
-                        <div className="d-flex flex-column p-1">{item.historyModifiedByLastName} {item.historyModifiedByFirstName} {item.historyModifiedByPatronymic}</div>
-                    </div>
-                    <pre className="d-flex flex-row py-2 history-text fs-6">{item.historyTaskText}</pre>
-                </div>
+                <tr className="border-top border-bottom">
+                    <tr className="d-flex flex-row">
+                        <td className="d-flex flex-column border-end p-1">{getDate(item.historyLastUpdated)}</td>
+                        <td className="d-flex flex-column p-1">{item.historyModifiedByLastName} {item.historyModifiedByFirstName} {item.historyModifiedByPatronymic}</td>
+                    </tr>
+                    <tr className="d-flex flex-row py-2">
+                        <pre className="history-text fs-6">{item.historyTaskText}</pre>
+                    </tr>
 
+                </tr>
             )
         }))
         : (<>Нет данных для отображения</>)
 
     return (
         <div>Ход решения
-            <div className="d-flex flex-column fs-6">{previousMessages}</div>
+            <table className="table table-hover d-flex fs-6">
+                <tbody>
+                    {previousMessages}
+                </tbody>
+            </table>
         </div>
     )
 }

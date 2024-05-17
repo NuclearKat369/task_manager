@@ -34,7 +34,7 @@ public class StatusController {
 
     // Получение количества задач с определённым статусом
     @GetMapping("/getNumberByStatus")
-    public List<TaskStatusCountDto> countTasksByTaskStatus(){
+    public List<TaskStatusCountDto> countTasksByTaskStatus() {
         return statusService.countTasksByTaskStatus();
     }
 }

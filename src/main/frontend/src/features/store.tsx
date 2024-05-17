@@ -5,7 +5,7 @@ import taskSubtypeReducer from "./taskSubtypeSlice";
 import taskCountReducer from "./taskCountSlice";
 import taskFileReducer from "./taskFileSlice";
 import authReducer from "./auth/authSlice";
-import taskListNewReducer from "./taskListNewSlice";
+import taskListReducer from "./taskListSlice";
 import employeesReducer from "./employeesSlice";
 import employeesWorkloadReducer from "./employeesWorkloadSlice";
 import taskHistoryReducer from './taskHistorySlice';
@@ -24,7 +24,7 @@ import {
     REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { apiSlice } from '../services/apiSlice';
+import { apiSlice } from './apiSlice';
 
 const rootReducer = combineReducers({
     taskStatus: taskStatusReducer,
@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
     task: taskReducer,
     taskCount: taskCountReducer,
     taskFiles: taskFileReducer,
-    taskListNew: taskListNewReducer,
+    taskList: taskListReducer,
     employees: employeesReducer,
     taskHistory: taskHistoryReducer,
     employeesWorkload: employeesWorkloadReducer,
@@ -47,15 +47,6 @@ const persistConfig = {
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// export const store = configureStore({
-//     reducer: {
-//         taskList: taskListReducer,
-//         taskStatus: taskStatusReducer,
-//         taskSubtype: taskSubtypeReducer,
-//         task: taskReducer,
-//     }
-// });
 
 const store = configureStore({
     reducer: {

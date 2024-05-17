@@ -11,5 +11,4 @@ public interface EmailBuilder {
     String buildConfirmEmail(String name, String link);
 
     String buildConfirmed(String email, String link);
-
 }

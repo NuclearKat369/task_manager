@@ -14,7 +14,7 @@ import { selectAllEmployees } from '../features/employeesSlice';
 import TaskHistory from './TaskHistory';
 import { selectCurrentRoles } from '../features/auth/authSlice';
 
-function CreateOrUpdateTaskComponent() {
+function CreateOrUpdateTask() {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -484,6 +484,6 @@ function CreateOrUpdateTaskComponent() {
     );
 }
 
-export default CreateOrUpdateTaskComponent;
+export default CreateOrUpdateTask;
 
 

@@ -8,12 +8,12 @@ import java.util.List;
 public interface StatusService {
 
     List<Status> getAllStatuses();
-//
-//    void saveStatus(Status status);
 
     Status getStatus(int statusId);
-//
-//    void deleteStatus(int statusId);
 
     List<TaskStatusCountDto> countTasksByTaskStatus();
 }
+//
+//    void deleteStatus(int statusId);
+//
+//    void saveStatus(Status status);

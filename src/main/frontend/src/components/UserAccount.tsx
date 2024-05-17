@@ -53,8 +53,6 @@ const UserAccount = () => {
     setAlertText(null);
   }
 
-  console.log("JUST PWD", newPassword, validPwd, newPasswordFocus, matchPwd, validMatch, matchFocus);
-
   const handleSubmit = async () => {
     console.log("handleSubmit");
 
@@ -131,6 +129,7 @@ const UserAccount = () => {
           {/* Пароль */}
           <div className="d-flex flex-row py-3">
             <div className="d-flex flex-column">
+              {/* Текущий пароль */}
               <div className="d-flex flex-row">
                 <div className="d-flex flex-column">
                   <label className="form-label" htmlFor="currentPasswordInput">Текущий пароль</label>
@@ -142,12 +141,13 @@ const UserAccount = () => {
                     value={currentPassword}
                     onChange={(e) => { setCurrentPassword(e.target.value) }}
                     required
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
+                    onFocus={() => setCurrentPasswordFocus(true)}
+                    onBlur={() => setCurrentPasswordFocus(false)}
                   />
                 </div>
               </div>
 
+              {/* Новый пароль */}
               <div className="d-flex flex-row">
                 <div className="d-flex flex-column  py-2">
                   <label className="form-label" htmlFor="newPasswordInput">
@@ -182,6 +182,8 @@ const UserAccount = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Подтвердить новый пароль */}
               <div className="d-flex flex-row">
                 <div className="d-flex flex-column  py-2">
                   <label className="form-label" htmlFor='confirmNewPasswordInput'>
@@ -217,6 +219,7 @@ const UserAccount = () => {
                 </div>
               </div>
 
+              {/* Кнопки */}
               <div className="d-flex flex-row py-3 justify-content-start">
                 <div className="d-flex flex-column">
                   <button className="btn btn-success" onClick={handleSubmit}
@@ -295,4 +298,4 @@ const UserAccount = () => {
   )
 }
 
-export default UserAccount
+export default UserAccount;

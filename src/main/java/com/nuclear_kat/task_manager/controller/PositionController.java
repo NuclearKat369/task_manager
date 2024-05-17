@@ -16,8 +16,9 @@ public class PositionController {
     @Autowired
     PositionService positionService;
 
+    // Получение списка всех должностей
     @GetMapping
-    public List<Position> getAllPositions(){
+    public List<Position> getAllPositions() {
         return positionService.getAllPositions();
     }
 }

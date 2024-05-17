@@ -5,7 +5,7 @@ export interface TaskState {
     isError: boolean,
     isFetching: boolean,
     isLoading: boolean,
-    isSuccess: boolean,
+    isSuccess: boolean
 }
 
 const initialState: TaskState = {
@@ -13,12 +13,12 @@ const initialState: TaskState = {
     isError: false,
     isFetching: false,
     isLoading: false,
-    isSuccess: false,
+    isSuccess: false
 }
 
-export const taskListNewSlice = createSlice({
+export const taskListSlice = createSlice({
 
-    name: "taskListNew",
+    name: "taskList",
     initialState,
     reducers: {
         setAllTasks: (state, action) => {
@@ -31,9 +31,11 @@ export const taskListNewSlice = createSlice({
         },
     },
 })
-export const { setAllTasks } = taskListNewSlice.actions;
+export const { setAllTasks } = taskListSlice.actions;
 
-export const selectAllTasks = ((state) => state.persistedReducer.taskListNew.value);
-export const selectIsSuccess = ((state) => state.persistedReducer.taskListNew.isSuccess);
+export const selectAllTasks = ((state) => state.persistedReducer.taskList.value);
+export const selectIsSuccess = ((state) => state.persistedReducer.taskList.isSuccess);
+export const selectIsFetching = ((state) => state.persistedReducer.taskList.isFetching);
+export const selectIsLoading = ((state) => state.persistedReducer.taskList.isLoading);
 
-export default taskListNewSlice.reducer;
+export default taskListSlice.reducer;

@@ -42,16 +42,6 @@
   }
 }
 
-/* .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
-  background-color: #85cdfa;
-  text-align: center;
-  color: #000000;
-} */
-
 .btn-layout {
   background-color: #ceebfd !important;
   border-color: #ceebfd;
@@ -134,7 +124,6 @@
 
 .navbar {
   height: 60px;
-  /* notice this value */
   width: 100%;
 }
 
@@ -161,8 +150,15 @@
   background-color: #f8f9fa;
 }
 
-.history-text{
+.history-text {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+}
+
+.img-info {
+  width: 650px;
+  margin-bottom: 50;
+  border-color: #ceebfd;
+  border: ridge;
 }

@@ -25,21 +25,22 @@ public class EmployeeController {
         return list;
     }
 
+    // Получение сотрудников с определённой ролью roleId
     @GetMapping("/{roleId}")
     public List<EmployeeDto> getEmployeesByRole(@PathVariable int roleId) {
         List<EmployeeDto> list = employeeService.getEmployeeByRole(roleId);
         return list;
     }
 
-    // Для проверки
+    // Получить информацию о сотруднике, возвращает объект класса EmployeeFullDto
     @GetMapping("/get-employee/{employeeId}")
     public EmployeeFullDto getEmployee(@PathVariable String employeeId) {
         return employeeService.getEmployeeInfoByUuid(UUID.fromString(employeeId));
     }
 
+    // Обновление данных сотрудника, возвращает объект класса EmployeeFullDto для дальнейшей работы
     @PutMapping("/{employeeId}")
-    public EmployeeFullDto updateEmployee(@RequestBody EmployeeFullDto employeeFullDto, @PathVariable String employeeId){
+    public EmployeeFullDto updateEmployee(@RequestBody EmployeeFullDto employeeFullDto, @PathVariable String employeeId) {
         return employeeService.saveEmployee(employeeFullDto, employeeId);
     }
-
 }

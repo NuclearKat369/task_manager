@@ -25,7 +25,7 @@ public class FileDataController {
 
     // Загрузка нового файла
     @PostMapping("/uploadFile")
-    private String uploadFileData(
+    public String uploadFileData(
             @RequestParam("taskId") int taskId,
             @RequestParam("files") MultipartFile[] multipartFiles) throws IOException {
         Task task = taskService.getTask(taskId);
@@ -45,22 +45,23 @@ public class FileDataController {
         return fileDataService.getFileData(fileId);
     }
 
+    // Получение байтов файла по ID без его названия и ID
     @GetMapping("/data/{fileId}")
     public byte[] getFileData(@PathVariable int fileId) {
         return fileDataService.getFileBytes(fileId);
     }
 
-    // Получение списка всех файлов заявки
+    // Получение списка всех файлов заявки, только их ID и названия
     @GetMapping("/task/{taskId}")
     public List<TaskFileDto> getFiles(@PathVariable int taskId) {
         return fileDataService.getAllFileDataByTaskId(taskId);
     }
 
-    // Получение всех файлов
-    @GetMapping("/all")
-    public List<FileData> getAllFiles() {
-        return fileDataService.getAllFileData();
-    }
+//    // Получение всех файлов
+//    @GetMapping("/all")
+//    public List<FileData> getAllFiles() {
+//        return fileDataService.getAllFileData();
+//    }
 
     // Удаление файла по ID
     @DeleteMapping("/{fileId}")
