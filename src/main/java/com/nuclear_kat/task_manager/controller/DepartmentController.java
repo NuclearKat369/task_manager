@@ -16,8 +16,9 @@ public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
+    // Получение списка всех отделов, возвращает список объектов класса Department
     @GetMapping
-    public List<Department> getAllDepartments(){
+    public List<Department> getAllDepartments() {
         return departmentService.getAllDepartments();
     }
 }

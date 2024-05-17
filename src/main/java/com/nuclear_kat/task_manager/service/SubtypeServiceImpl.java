@@ -43,10 +43,10 @@ public class SubtypeServiceImpl implements SubtypeService {
         return subtype;
     }
 
-    // Удалить подтип
-    @Override
-    @Transactional
-    public void deleteSubtype(int subtypeId) {
-        subtypeRepository.deleteById(subtypeId);
-    }
+//    // Удалить подтип
+//    @Override
+//    @Transactional
+//    public void deleteSubtype(int subtypeId) {
+//        subtypeRepository.deleteById(subtypeId);
+//    }
 }

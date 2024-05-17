@@ -1,6 +1,5 @@
 package com.nuclear_kat.task_manager.service;
 
-
 import com.nuclear_kat.task_manager.dto.EmployeeDto;
 import com.nuclear_kat.task_manager.dto.EmployeeFullDto;
 import com.nuclear_kat.task_manager.dto.EmployeeNoRolesDto;
@@ -35,5 +34,4 @@ public interface EmployeeService extends UserDetailsService {
     Employee getEmployeeFromToken(HttpServletRequest request);
 
     EmployeeFullDto saveEmployee(EmployeeFullDto employeeFullDto, String employeeId);
-
 }

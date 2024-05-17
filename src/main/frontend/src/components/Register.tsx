@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { BsFillCheckCircleFill, BsFillXCircleFill, BsInfoSquareFill } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { EMAIL_REGEX, EMAIL_TIP, NAME_REGEX, NAME_TIP, PWD_REGEX, PWD_TIP } from '../features/globalConst';
 import { useRegisterMutation } from '../features/auth/authApiSlice';
 
-const RegisterComponent = () => {
+const Register = () => {
 
     const userRef = useRef(null);
     const errRef = useRef(null);
@@ -305,4 +305,4 @@ const RegisterComponent = () => {
     )
 }
 
-export default RegisterComponent
+export default Register;

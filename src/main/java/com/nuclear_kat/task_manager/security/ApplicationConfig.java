@@ -19,7 +19,7 @@ public class ApplicationConfig {
     private EmployeeService employeeService;
 
     @Bean
-    public AuthenticationProvider AuthenticationProvider() {
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder());

@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /* TaskStatusCountDto используется в StatusRepositoryCriteriaImpl при составлении результатов
- * запроса дянных из БД о количестве заявок с определённым статусом */
+ * запроса данных из БД о количестве заявок с определённым статусом */
 @Data
 @NoArgsConstructor
 public class TaskStatusCountDto {

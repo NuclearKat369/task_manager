@@ -1,4 +1,4 @@
-import { apiSlice } from "../services/apiSlice";
+import { apiSlice } from "./apiSlice";
 import { TASK_API_BASE_URL } from "./globalConst";
 
 

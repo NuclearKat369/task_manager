@@ -25,7 +25,7 @@ public class TaskController {
 
     // Добавление заявки
     @PostMapping
-    private Task addTask(@RequestBody TaskSubtypeDto taskSubtypeDto, HttpServletRequest request) {
+    public Task addTask(@RequestBody TaskSubtypeDto taskSubtypeDto, HttpServletRequest request) {
 
         Task savedTask = taskService.saveTask(taskSubtypeDto, request);
 

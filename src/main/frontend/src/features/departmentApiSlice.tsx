@@ -1,4 +1,4 @@
-import { apiSlice } from "../services/apiSlice";
+import { apiSlice } from "./apiSlice";
 import { DEPARTMENT_API_BASE_URL } from "./globalConst";
 
 export const departmentApiSlice = apiSlice.injectEndpoints({

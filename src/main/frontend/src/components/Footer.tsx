@@ -1,4 +1,4 @@
-function FooterComponent() {
+function Footer() {
 
     return (
         <div className='fixed-bottom'>
@@ -11,4 +11,4 @@ function FooterComponent() {
     );
 }
 
-export default FooterComponent;
+export default Footer;

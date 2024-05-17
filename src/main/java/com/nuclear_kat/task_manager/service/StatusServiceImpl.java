@@ -17,8 +17,6 @@ public class StatusServiceImpl implements StatusService {
 
     @Autowired
     private StatusRepository statusRepository;
-    @Autowired
-    private StatusRepositoryCriteriaImpl statusRepositoryCriteriaImpl;
 
     // Получить все статусы
     @Override
@@ -50,7 +48,7 @@ public class StatusServiceImpl implements StatusService {
     @Override
     @Transactional
     public List<TaskStatusCountDto> countTasksByTaskStatus() {
-        return statusRepositoryCriteriaImpl.taskStatusCountDto();
+        return statusRepository.taskStatusCountDto();
     }
 
 //    // Удалить статус

@@ -1,15 +1,10 @@
-import { logOut, selectCurrentToken, selectCurrentEmail, setCredentials } from "../features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../features/store";
-import axios from "../services/axios";
+import { logOut, setCredentials } from "../features/auth/authSlice";
+import { useAppDispatch } from "../features/store";
+import axios from "../features/axios";
 
 const useRefreshToken = () => {
 
-    const access = useAppSelector(selectCurrentToken);
-    const email = useAppSelector(selectCurrentEmail);
     const dispatch = useAppDispatch();
-
-    console.log("EMAIL IN useRefreshToken", email);
-
 
     const refresh = async () => {
         const response = await axios.get("/auth/refresh-token", {

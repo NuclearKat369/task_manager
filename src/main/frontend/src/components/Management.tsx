@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../features/store';
 import { selectCurrentToken, selectCurrentFirstName } from '../features/auth/authSlice';
 
-const ManagementComponent = () => {
+const Management = () => {
 
     const user = useAppSelector(selectCurrentFirstName);
     //useAppSelector(selectCurrentUser);
@@ -26,4 +26,4 @@ const ManagementComponent = () => {
     return content;
 }
 
-export default ManagementComponent;
+export default Management;
